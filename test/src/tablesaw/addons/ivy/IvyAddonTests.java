@@ -1,6 +1,7 @@
 package tablesaw.addons.ivy;
 
 
+import tablesaw.Debug;
 import tablesaw.addons.ivy.IvyAddon;
 import tablesaw.addons.ivy.ResolveRule;
 import org.apache.ivy.core.report.ResolveReport;
@@ -13,6 +14,7 @@ import tablesaw.TablesawException;
 import tablesaw.Tablesaw;
 
 import org.apache.ivy.core.report.ArtifactDownloadReport;
+import tablesaw.addons.java.JavaProgram;
 
 import java.util.Collections;
 
@@ -26,6 +28,8 @@ public class IvyAddonTests
 		{
 		m_make = new Tablesaw("test/ivy");
 		m_make.setProperty(Tablesaw.PROP_CACHE_FILE, "build/.ivyrulecache");
+		m_make.setProperty(JavaProgram.CLASS_DIRECTORY_PROPERTY, "build/classes");
+		m_make.setProperty(JavaProgram.SOURCE_DIRECTORY_PROPERTY, "src/main/java");
 		m_make.init();
 		}
 	

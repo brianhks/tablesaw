@@ -44,6 +44,8 @@ public class PomRuleTests
 		resolveRule.doMakeAction(resolveRule);
 		File pomFile = File.createTempFile("pom", ".xml");
 		PomRule pr = new PomRule(new File("test/resources/ivy.xml"), pomFile, resolveRule);
+		pr.setPomName("parser_test");
+		pr.setPomArtifactId("parser_test");
 
 		pr.doMakeAction(pr);
 

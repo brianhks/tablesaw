@@ -19,6 +19,7 @@ public class JavaProgramTests
 		{
 		m_make = new Tablesaw("test");
 		m_make.setProperty(Tablesaw.PROP_CACHE_FILE, "build/.javaprogram");
+		m_make.clearProperty(JavaProgram.PROGRAM_NAME_PROPERTY);
 		m_make.init();
 		}
 	

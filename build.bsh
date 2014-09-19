@@ -4,14 +4,14 @@
  * as this copyright notice appears in all source files.
  */
  
-import cpmake.*;
-import cpmake.rules.*;
-import cpmake.addons.junit.*;
-import cpmake.addons.java.*;
+import tablesaw.*;
+import tablesaw.rules.*;
+import tablesaw.addons.junit.*;
+import tablesaw.addons.java.*;
 //import tablesaw.java.*;
 
 print("========================================================");
-make.setProperty("tablesaw.multiThreadOutput", "true");
+saw.setProperty("tablesaw.multiThreadOutput", "true");
  
 blddir = "build";
 classdir = blddir+"/classes";
@@ -29,7 +29,7 @@ versionSrcFile = "tablesaw/Version.java";
 javaDocDir = "../tablesaw.javadoc";
 
 /*
-tstClassFiles = make.substitute("(.*)\\.java", classdir+"/$1.class", tstSourceFiles);
+tstClassFiles = saw.substitute("(.*)\\.java", classdir+"/$1.class", tstSourceFiles);
 tstClassFiles.addAll(classFiles);
  */
  
@@ -52,10 +52,10 @@ templateFiles = new RegExFileSet(srcdir, ".*")
 	
 classpath = new Classpath(extJarFiles);
 
-make.addSearchPath(".*\\.java", gensrcdir);
-make.addSearchPath(".*\\.java", tstsrc);
+saw.addSearchPath(".*\\.java", gensrcdir);
+saw.addSearchPath(".*\\.java", tstsrc);
 
-//make.createPatternDependency(".*", "build.bsh");
+//saw.createPatternDependency(".*", "build.bsh");
 
 //-------------------------------------------------------------------
 //==-- DIRECTORY RULES --==
@@ -71,7 +71,7 @@ cleanRule = new SimpleRule("clean").setDescription("Removes the build directory"
 		
 void doClean(Rule rule)
 	{
-	make.deltree(blddir);
+	saw.deltree(blddir);
 	}
 
 //-------------------------------------------------------------------
@@ -101,9 +101,9 @@ void createVersionClass(Rule rule)
 
 //-------------------------------------------------------------------
 //==-- COMPILE --==
-make.setProperty("cpmake.java.program.source_directory", srcdir);
-make.setProperty("cpmake.java.program.class_directory", classdir);
-make.setProperty("cpmake.java.program.test_source_directory", tstsrc);
+saw.setProperty("tablesaw.java.program.source_directory", srcdir);
+saw.setProperty("tablesaw.java.program.class_directory", classdir);
+saw.setProperty("tablesaw.java.program.test_source_directory", tstsrc);
 
 jp = new JavaProgram().setProgramName("tablesaw-"+buildVersion).setup();
 jc = jp.getCompileRule();
@@ -121,7 +121,7 @@ jp.getJarRule().setManifest("manifest.txt")
 		.addFile("src", "tablesaw/addons/ivy/pom.xsl")
 		.addFile("src", "tablesaw/tablesaw.properties");
 		
-make.setDefaultTarget("jar");
+saw.setDefaultTarget("jar");
 
 
 //------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ void doJavadoc(Rule rule)
 			"tablesaw.addons tablesaw.addons.java tablesaw.java tablesaw.addons.csharp "+
 			"tablesaw.addons.ivy tablesaw.addons.junit";
 	
-	make.exec(cmd);
+	saw.exec(cmd);
 	}
 	
 //------------------------------------------------------------------------------
@@ -170,37 +170,37 @@ void doSlickXML(Rule rule)
 	{
 	cmd = "java -cp "+classpath+" slickxml.SlickParser etc/slick_config.xml";
 	
-	make.exec(cmd);
+	saw.exec(cmd);
 	}
 	
 //-------------------------------------------------------------------
 //==-- CREATE DISTRIBUTION JAR FILES --==
-/* make.createPhonyRule("dist", jarfile, null);
+/* saw.createPhonyRule("dist", jarfile, null);
 
 for (dist : distList)
 	{
-	make.createDirectoryRule(tempdir+"/"+dist, null, true);
-	make.createPhonyRule(dist, tempdir+"/"+dist, "extractJars");
-	make.createRecursiveCopyRule("copyCPMakeTo"+dist, new String[] {"compile"}, 
+	saw.createDirectoryRule(tempdir+"/"+dist, null, true);
+	saw.createPhonyRule(dist, tempdir+"/"+dist, "extractJars");
+	saw.createRecursiveCopyRule("copytablesawTo"+dist, new String[] {"compile"}, 
 			blddir, ".*", tempdir+"/"+dist);
-	distjar = jardir+"/cpmake_"+dist+".jar";
-	make.createExplicitRule(distjar, new String[]
+	distjar = jardir+"/tablesaw_"+dist+".jar";
+	saw.createExplicitRule(distjar, new String[]
 			{
 			dist,
 			jardir,
 			"compile",
-			"copyCPMakeTo"+dist,
+			"copytablesawTo"+dist,
 			}, "createDistJar", true);
-	make.createExplicitDependency("dist", distjar);
+	saw.createExplicitDependency("dist", distjar);
 	}
 
 extractJars(String target, String[] prereqs)
 	{
 	print("Extracting "+target);
-	extractList = make.createFileList(intdir+"/"+target, ".*\\.jar", 
-			make.INCLUDE_PATH);
+	extractList = saw.createFileList(intdir+"/"+target, ".*\\.jar", 
+			saw.INCLUDE_PATH);
 	for (jar : extractList)
-		make.exec(prereqs[0], "jar -xf ../../"+jar, true);
+		saw.exec(prereqs[0], "jar -xf ../../"+jar, true);
 	}
 	
 createDistJar(String target, String[] prereqs)
@@ -210,24 +210,24 @@ createDistJar(String target, String[] prereqs)
 	String cmd = "jar -cfm "+target+" manifest.txt license.txt -C "+
 			tempdir+"/"+prereqs[0]+" .";
 			
-	make.exec(cmd);
+	saw.exec(cmd);
 	} */
 	
 
 
 //-------------------------------------------------------------------
 //==-- COMPILE TEST CODE --==
-/*make.createPhonyRule("test", "onejar", "test");
+/*saw.createPhonyRule("test", "onejar", "test");
 void test(String target, String[] prereqs)
 	{
 	print("running test");
 	cwd = "test/c++";
-	make.exec(cwd, "java -cp ../../jar/cpmake.jar cpmake.Tablesaw -f build.bsh clean test", true);
-	make.exec(cwd, "java -cp ../../jar/cpmake.jar cpmake.Tablesaw -f build.py clean test clean", true);
-	//make.exec(cwd, "java -cp ../../jar/cpmake.jar cpmake.Tablesaw -f build.groovy clean test clean", true);
+	saw.exec(cwd, "java -cp ../../jar/tablesaw.jar tablesaw.Tablesaw -f build.bsh clean test", true);
+	saw.exec(cwd, "java -cp ../../jar/tablesaw.jar tablesaw.Tablesaw -f build.py clean test clean", true);
+	//saw.exec(cwd, "java -cp ../../jar/tablesaw.jar tablesaw.Tablesaw -f build.groovy clean test clean", true);
 	
 	cwd = "test/java";
-	make.exec(cwd, "java -cp ../../jar/cpmake.jar cpmake.Tablesaw -f build.bsh clean test", true);
-	make.exec(cwd, "java -cp ../../jar/cpmake.jar cpmake.Tablesaw -f build.py clean test clean", true);
-	//make.exec(cwd, "java -cp ../../jar/cpmake.jar cpmake.Tablesaw -f build.groovy clean test clean", true);
+	saw.exec(cwd, "java -cp ../../jar/tablesaw.jar tablesaw.Tablesaw -f build.bsh clean test", true);
+	saw.exec(cwd, "java -cp ../../jar/tablesaw.jar tablesaw.Tablesaw -f build.py clean test clean", true);
+	//saw.exec(cwd, "java -cp ../../jar/tablesaw.jar tablesaw.Tablesaw -f build.groovy clean test clean", true);
 	}*/
