@@ -1,0 +1,27 @@
+
+<ivy-module version="2.0">
+	<info organisation="agileclick.org" module="tablesaw_test"/>
+	<configurations defaultconf="default" > <!-- defaultconfmapping="runtime->*" -->
+		<conf name="default"/>
+		<conf name="integration"/>
+		<conf name="test"/>
+	</configurations>
+	<dependencies>
+		<dependency org="com.google.guava" name="guava" rev="14.0" />
+
+		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test" />
+
+		<dependency org="org.apache.zookeeper" name="zookeeper" rev="3.4.5" transitive="false" />
+
+		<dependency org="org.hectorclient" name="hector-core" rev="1.1-4">
+			<artifact name="hector-core" type="bundle" ext="jar"/>
+			<exclude org="javax.servlet" module="servlet-api"/>
+		</dependency>
+
+		<dependency org="org.hectorclient" name="hector-object-mapper" rev="3.1-09">
+			<exclude module="cassandra-all"/>
+			<exclude org="joda-time" module="joda-time"/>
+		</dependency>
+
+	</dependencies>
+</ivy-module>

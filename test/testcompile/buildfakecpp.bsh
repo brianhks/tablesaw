@@ -1,0 +1,24 @@
+bldoutdir = "build";
+srcdir = "src";
+
+srcFiles = make.createFileList(srcdir, ".*\\.cpp");
+objs = make.substitute("(.*)\\.cpp", bldoutdir+"/$1.obj", srcFiles);
+
+make.addSearchPath(srcdir);
+
+
+make.createDirectoryRule(bldoutdir, null, false);
+
+
+make.createPatternDependency(bldoutdir+"/(.*)\\.obj", bldoutdir);
+make.createPatternRule(bldoutdir+"/(.*)\\.obj", "$1.cpp", "compile", true);
+compile(String target, String[] prereqs)
+	{
+	print(prereqs[0]);
+	f = new File(target);
+	f.createNewFile();
+	}
+	
+make.createPhonyRule("buildall", objs, null);
+
+make.setDefaultTarget("buildall");

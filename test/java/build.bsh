@@ -1,0 +1,98 @@
+/*
+ * Copyright (c) 2004, Brian Hawkins
+ * Permission is granted to use this code without restriction as long
+ * as this copyright notice appears in all source files.
+ */
+ 
+/**
+	This script shows building java files using the standard rules and 
+	command line definitions
+*/
+
+import tablesaw.*;
+import tablesaw.rules.*;
+import tablesaw.addons.java.Classpath;
+import org.apache.tools.ant.taskdefs.optional.junit.*;
+import org.apache.tools.ant.*;
+
+print("===============================================");
+classDir = "build/classes";
+jarDir = "build/jar";
+target = jarDir+"/test.jar";
+
+classpath = new Classpath(classDir);
+
+new DirectoryRule("build");
+
+saw.addSearchPath(".*\\.java", "src");
+
+sources = new RegExFileSet("src", ".*\\.java").recurse();
+
+compileRule = new PatternRule("compile").multiTarget()
+		.addSources(sources.getFilePaths())
+		.setSourcePattern("(.*)\\.java")
+		.setTargetPattern(classDir+"/$1.class")
+		.setMakeAction("doCompile")
+		.addDepend(new DirectoryRule(classDir));
+
+def = saw.getDefinition("sun_javac");
+def.setMode("debug");
+def.add("class_dir", classDir);
+def.add("classpath", classpath.toString());
+		
+void doCompile(Rule rule)
+	{
+	for (String t : rule.getRebuildTargets())
+		saw.delete(t);
+		
+	sources = rule.getRebuildSources();
+	//Add source files to definition
+	def.add("sourcefile", sources);
+	print("Compiling "+sources.size()+" source files.");
+	
+	String cmd = def.getCommand();
+	saw.exec(cmd, true);
+	}
+	
+//-------------------------------------------------------------------
+//==-- RULE FOR CREATING JAR --==
+jarRule = new SimpleRule("jar").addTarget(target)
+		.addDepend(compileRule)
+		.setMakeAction("doJar")
+		.addDepend(new DirectoryRule(jarDir));
+		
+void doJar(Rule rule)
+	{
+	print("doing the jar");
+	
+	jarDef = saw.getDefinition("sun_jar");
+	jarDef.set("create_with_manifest");
+	jarDef.add("jar_file", target);
+	jarDef.add("manifest", "manifest.txt");
+	files = new RegExFileSet(classDir, ".*\\.class").recurse();
+	for (file : files.getFiles())
+		jarDef.addGroup("inc_sub_file", new String[] {classDir, file.getFile()});
+		
+	saw.exec(jarDef.getCommand());
+	}
+
+//-------------------------------------------------------------------
+//==-- CREATE JAVADOCS --==
+new SimpleRule("javadoc").setMakeAction("doJavadoc").setDescription("Create javadocs");
+void doJavadoc(Rule rule)
+	{
+	def = saw.getDefinition("sun_javadoc");
+	def.set("public").set("destination", "doc").set("source", sources.getFullFilePaths());
+	saw.exec(def.getCommand());
+	}
+	
+//-------------------------------------------------------------------
+//==-- TEST --==
+//make.createPhonyRule("test", jp.getJarFileTarget(), "test");
+testRule = new SimpleRule("test").setMakeAction("doTest")
+		.addDepend(jarRule);
+void doTest(Rule rule)
+	{
+	saw.exec("java -jar "+target);
+	}	
+

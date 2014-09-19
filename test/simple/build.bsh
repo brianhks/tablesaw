@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2004, Brian Hawkins
+ * Permission is granted to use this code without restriction as long
+ * as this copyright notice appears in all source files.
+ */
+ 
+import tablesaw.*;
+import tablesaw.rules.*;
+
+new SimpleRule("test").addTarget("out.txt").addSource("in.txt")
+		.setMakeAction("buildIt");
+void buildIt(Rule rule)
+	{
+	print("Building "+rule.getTarget());
+	byte[] buf = new byte[1024];
+	
+	fis = new FileInputStream(rule.getSource());
+	fos = new FileOutputStream(rule.getTarget());
+	size = 0;
+	while ((size = fis.read(buf)) != -1)
+		fos.write(buf, 0, size);
+		
+	fis.close();
+	fos.close();
+	}
+	
+make.setDefaultTarget("test");
+

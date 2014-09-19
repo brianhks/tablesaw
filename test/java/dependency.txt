@@ -1,0 +1,14 @@
+javadoc
+	doc
+test
+	build/jar/cpmaketest.jar
+		build/classes/Employee.class
+			src/Employee.java
+			build/classes
+		build/classes/cpmaketest.class
+			src/cpmaketest.java
+			build/classes
+		build/classes/Company.class
+			src/Company.java
+			build/classes
+		build/jar

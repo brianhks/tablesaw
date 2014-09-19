@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) 2013, Brian Hawkins
+ * Permission is granted to use this code without restriction as long
+ * as this copyright notice appears in all source files.
+ */
+ 
+/*
+This script shows an example of a simple c++ application that builds on both
+linux and windows.
+*/
+ 
+//All methods called off of the saw object are in the javadocs under the Tablesaw class
+//make is just an instance of Tablesaw made available in the script.
+import tablesaw.*;
+import tablesaw.rules.*;
+
+build = saw.getProperty("build", "debug");
+bldoutdir = "build/"+build;
+progBin = "tablesawtest";
+
+new DirectoryRule("build");
+
+//Include my compiler definition file that has definitions for all platforms I compile on
+saw.includeDefinitionFile("compilers.xml");
+
+//Decide which definition to use
+if (saw.getProperty("os.name").startsWith("Windows"))
+	{
+	compilerDef = saw.getDefinition("vc7_compiler");
+	linkerDef = saw.getDefinition("vc7_linker");
+	}
+else
+	{
+	compilerDef = saw.getDefinition("linux_gcc_compiler");
+	linkerDef = saw.getDefinition("linux_gcc_linker");
+	}
+
+compilerDef.add("user_define", "_CRT_SECURE_NO_WARNINGS=1");
+	
+//Set the platform specific build directory
+bldoutdir += "/"+compilerDef.getProperty("platform");
+	
+//Set generic options for the compilers
+compilerDef.setMode("debug");
+linkerDef.setMode(new String[] {"debug", "executable"});
+
+compilerDef.set("warning_hi").set("error_on_warning");
+
+//Retreive the platform specific object file extension.  Used in rule creation
+objExt = compilerDef.getProperty("object_extension");
+
+progBin = progBin + linkerDef.getProperty("executable_sufix");
+
+//The source files can either be a static list like this or there are 
+//methods on the make object that will create the list for you
+srcFiles = new ArrayList(); 
+srcFiles.add("main.cpp");
+srcFiles.add("employee.cpp");
+srcFiles.add("company.cpp");
+	
+
+//Set the include directory for header files
+includeDirs = new String[] { "include" };
+compilerDef.add("user_include_path", includeDirs);
+
+	
+//-------------------------------------------------------------------
+//==-- SET SEARCH PATHS --==
+saw.addSearchPath(".*\\.hpp", "include");
+saw.addSearchPath(".*\\.cpp", "src");
+
+//-------------------------------------------------------------------
+//==-- COMPILE OBJECT RULE --==
+compileRule = new PatternRule().addSources(srcFiles)
+		.setSourcePattern("(.*)\\.cpp")
+		.setTargetPattern(bldoutdir+"/$1"+objExt)
+		.setMakeAction("doCompile")
+		.addDepend(new DirectoryRule(bldoutdir));
+		
+void doCompile(Rule cpRule)
+	{
+	source = cpRule.getSource();
+	//This bit is to print out which file is being compiled.  VC does that automatically so we dont want it twice
+	if (!compilerDef.getName().equals("vc7_compiler"))
+		print(new File(source).getName());
+		
+	//Set which file is to compile and get the command from the definition file
+	compilerDef.set("source_file", source);
+	compilerDef.set("object_file", cpRule.getTarget());
+	cmd = compilerDef.getCommand();
+	saw.exec(cmd);
+	}
+	
+//-------------------------------------------------------------------
+//==-- LINK EXECUTABLE --==
+linkRule = new SimpleRule("link").addTarget(bldoutdir+"/"+progBin)
+		.addDepend(compileRule)
+		.setMakeAction("doLink");
+		
+void doLink(Rule rule)
+	{
+	print("Linking "+rule.getTarget()+" for "+linkerDef.getProperty("platform"));
+	linkerDef.add("object_files", compileRule.getPatternTargets());
+	linkerDef.add("out_file", rule.getTarget());
+	cmd = linkerDef.getCommand();
+	saw.exec(cmd);
+	}
+	
+//-------------------------------------------------------------------
+//==-- TEST --==
+new SimpleRule("test").addDepend(linkRule).setMakeAction("doTest");
+
+void doTest(Rule rule)
+	{
+	print("Running Test");
+	saw.exec(bldoutdir, saw.fullPath(bldoutdir)+"/"+progBin, true);
+	} 
+	
+	
+saw.setDefaultTarget(bldoutdir+"/"+progBin);

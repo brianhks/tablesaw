@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2010, Brian Hawkins
+ * Permission is granted to use this code without restriction as long
+ * as this copyright notice appears in all source files.
+ */
+ 
+/**
+	This script shows off some specialized rules for building java programs
+	namely the JavaCompiler rule and JarFile rule
+*/
+ 
+import tablesaw.*;
+import tablesaw.rules.*;
+import tablesaw.java.*;
+import org.apache.tools.ant.taskdefs.optional.junit.*;
+import org.apache.tools.ant.*;
+
+print("===============================================");
+classDir = "build/classes";
+jarDir = "build/jar";
+target = jarDir+"/test.jar";
+
+classpath = new ClassPath(classDir);
+
+new DirectoryRule("build");
+
+compileRule = new JavaCompiler("compile", classDir)
+		.setDescription("Compile java files")
+		.addSourceDir("src");
+
+	
+//-------------------------------------------------------------------
+//==-- RULE FOR CREATING JAR --==
+jarRule = new JarFile("jar", target).setDescription("Create jar file")
+		.addDepend(compileRule)
+		.setManifest("manifest.txt")
+		.addDepend(new DirectoryRule(jarDir))
+		.addFileSet(new RegExFileSet(classDir, ".*\\.class").recurse());
+		
+//-------------------------------------------------------------------
+//==-- CREATE JAVADOCS --==
+new SimpleRule("javadoc").setMakeAction("doJavadoc").setDescription("Create javadocs");
+void doJavadoc(Rule rule)
+	{
+	def = make.getDefinition("sun_javadoc");
+	def.set("public").set("destination", "doc").set("source", compileRule.getSources());
+	make.exec(def.getCommand());
+	}
+	
+//-------------------------------------------------------------------
+//==-- TEST --==
+testRule = new SimpleRule("test").setMakeAction("doTest").setDescription("Run simple test")
+		.addDepend(jarRule)
+		.alwaysRun();
+void doTest(Rule rule)
+	{
+	make.exec("java -jar "+target);
+	}	
+

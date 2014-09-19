@@ -1,0 +1,341 @@
+Reading cache
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Build file = build.bshProcessing build.bsh
+===============================================
+AddRule() null cpmake.rules.PatternRule@99681b
+AddRule() null cpmake.rules.DirectoryRule@166a22b
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null cpmake.rules.DirectoryRule@1394894
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Building target compile
+PatternRule source : target pairs
+  Employee.java : build/classes/Employee.class
+  cpmaketest.java : build/classes/cpmaketest.class
+  Company.java : build/classes/Company.class
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Adding rule name: clean
+Adding rule name: help
+Adding rule name: ant
+Add target build.xml
+Adding rule for build.xml
+Adding rule name: compile
+Add target build/classes
+Adding rule for build/classes
+Adding rule name: jar
+Add target build/jar/test.jar
+Adding rule for build/jar/test.jar
+Add target build/jar
+Adding rule for build/jar
+Adding rule name: javadoc
+Adding rule name: test
+Add target build/classes/Employee.class
+Adding rule for build/classes/Employee.class
+Add target build/classes/cpmaketest.class
+Adding rule for build/classes/cpmaketest.class
+Add target build/classes/Company.class
+Adding rule for build/classes/Company.class
+addToBuildQueue(compile, true, 0)
+Rule for compile is cpmake.rules.PatternRule@99681b
+Comparing source: Employee.java to null
+Comparing source: cpmaketest.java to null
+Comparing source: Company.java to null
+adding depend rule AbstractSimpleRule(null) [build/classes/Employee.class, ]
+adding depend rule AbstractSimpleRule(null) [build/classes/cpmaketest.class, ]
+adding depend rule AbstractSimpleRule(null) [build/classes/Company.class, ]
+rule dependents 3
+addToBuildQueue(build/classes/Employee.class, false, 0)
+Rule for build/classes/Employee.class is AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ]
+Dependency lookup for Employee.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/Employee.class
+Lookup done 0 dependencies found.
+adding depend name Employee.java
+adding depend rule cpmake.rules.DirectoryRule@166a22b
+rule dependents 2
+addToBuildQueue(Employee.java, false, 0)
+Rule for Employee.java is null
+Cache lookup for src/Employee.java
+Cache miss
+Target Employee.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+Rule for build/classes is cpmake.rules.DirectoryRule@166a22b
+rule dependents 0
+Adding BuildAction(cpmake.rules.DirectoryRule@166a22b) to build queue at pos 0
+Rebuild: AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ] because rebuild of cpmake.rules.DirectoryRule@166a22b
+Adding BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ]) to build queue at pos 0
+Rebuild: cpmake.rules.PatternRule@99681b because rebuild of AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ]
+addToBuildQueue(build/classes/cpmaketest.class, false, 0)
+Rule for build/classes/cpmaketest.class is AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ]
+Dependency lookup for cpmaketest.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/cpmaketest.class
+Lookup done 0 dependencies found.
+adding depend name cpmaketest.java
+adding depend rule cpmake.rules.DirectoryRule@166a22b
+rule dependents 2
+addToBuildQueue(cpmaketest.java, false, 0)
+Rule for cpmaketest.java is null
+Cache lookup for src/cpmaketest.java
+Cache miss
+Target cpmaketest.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+rule dependents 0
+Adding BuildAction(cpmake.rules.DirectoryRule@166a22b) to build queue at pos 0
+Rebuild: AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ] because rebuild of cpmake.rules.DirectoryRule@166a22b
+Adding BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ]) to build queue at pos 0
+Rebuild: cpmake.rules.PatternRule@99681b because rebuild of AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ]
+addToBuildQueue(build/classes/Company.class, false, 0)
+Rule for build/classes/Company.class is AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ]
+Dependency lookup for Company.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/Company.class
+Lookup done 0 dependencies found.
+adding depend name Company.java
+adding depend rule cpmake.rules.DirectoryRule@166a22b
+rule dependents 2
+addToBuildQueue(Company.java, false, 0)
+Rule for Company.java is null
+Cache lookup for src/Company.java
+Cache miss
+Target Company.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+rule dependents 0
+Adding BuildAction(cpmake.rules.DirectoryRule@166a22b) to build queue at pos 0
+Rebuild: AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ] because rebuild of cpmake.rules.DirectoryRule@166a22b
+Adding BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ]) to build queue at pos 0
+Rebuild: cpmake.rules.PatternRule@99681b because rebuild of AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ]
+Adding BuildAction(cpmake.rules.PatternRule@99681b) to build queue at pos 0
+Processing: BuildAction(cpmake.rules.DirectoryRule@166a22b)
+COMPLETE - BuildAction(cpmake.rules.DirectoryRule@166a22b)
+Processing: BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ])
+COMPLETE - BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ])
+Processing: BuildAction(cpmake.rules.DirectoryRule@166a22b)
+COMPLETE - BuildAction(cpmake.rules.DirectoryRule@166a22b)
+Processing: BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ])
+COMPLETE - BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ])
+Processing: BuildAction(cpmake.rules.DirectoryRule@166a22b)
+COMPLETE - BuildAction(cpmake.rules.DirectoryRule@166a22b)
+Processing: BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ])
+COMPLETE - BuildAction(AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ])
+Processing: BuildAction(cpmake.rules.PatternRule@99681b)
+Calling doCompile for cpmake.rules.PatternRule@99681bCompiling 3 source files.
+Note: src/Company.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+COMPLETE - BuildAction(cpmake.rules.PatternRule@99681b)
+Writing cache
+Build time: 00:00:00
+Reading cache
+  Read src/Company.java  Read src/Employee.java  Read src/cpmaketest.javaAddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Build file = build.bshProcessing build.bsh
+===============================================
+AddRule() null cpmake.rules.PatternRule@184ec44
+AddRule() null cpmake.rules.DirectoryRule@1bc887b
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null cpmake.rules.DirectoryRule@14c194d
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Building target compile
+PatternRule source : target pairs
+  Employee.java : build/classes/Employee.class
+  cpmaketest.java : build/classes/cpmaketest.class
+  Company.java : build/classes/Company.class
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Adding rule name: clean
+Adding rule name: help
+Adding rule name: ant
+Add target build.xml
+Adding rule for build.xml
+Adding rule name: compile
+Add target build/classes
+Adding rule for build/classes
+Adding rule name: jar
+Add target build/jar/test.jar
+Adding rule for build/jar/test.jar
+Add target build/jar
+Adding rule for build/jar
+Adding rule name: javadoc
+Adding rule name: test
+Add target build/classes/Employee.class
+Adding rule for build/classes/Employee.class
+Add target build/classes/cpmaketest.class
+Adding rule for build/classes/cpmaketest.class
+Add target build/classes/Company.class
+Adding rule for build/classes/Company.class
+addToBuildQueue(compile, true, 0)
+Rule for compile is cpmake.rules.PatternRule@184ec44
+Comparing source: Employee.java to Employee.class
+Comparing source: cpmaketest.java to cpmaketest.class
+Comparing source: Company.java to Company.class
+adding depend rule AbstractSimpleRule(null) [build/classes/Employee.class, ]
+adding depend rule AbstractSimpleRule(null) [build/classes/cpmaketest.class, ]
+adding depend rule AbstractSimpleRule(null) [build/classes/Company.class, ]
+rule dependents 3
+addToBuildQueue(build/classes/Employee.class, false, 0)
+Rule for build/classes/Employee.class is AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ]
+Dependency lookup for Employee.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/Employee.class
+Lookup done 1 dependencies found.
+adding depend name Employee.java
+adding depend rule cpmake.rules.DirectoryRule@1bc887b
+rule dependents 2
+addToBuildQueue(Employee.java, false, 0)
+Rule for Employee.java is null
+Cache lookup for src/Employee.java
+Cache hit 1268384162000:1268384162000
+Target Employee.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+Rule for build/classes is cpmake.rules.DirectoryRule@1bc887b
+rule dependents 0
+addToBuildQueue(build/classes/cpmaketest.class, false, 0)
+Rule for build/classes/cpmaketest.class is AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ]
+Dependency lookup for cpmaketest.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/cpmaketest.class
+Lookup done 3 dependencies found.
+adding depend name cpmaketest.java
+adding depend name Employee.java
+adding depend name Company.java
+adding depend rule cpmake.rules.DirectoryRule@1bc887b
+rule dependents 4
+addToBuildQueue(cpmaketest.java, false, 0)
+Rule for cpmaketest.java is null
+Cache lookup for src/cpmaketest.java
+Cache hit 1268387664000:1268387664000
+Target cpmaketest.java is a file with no rule
+addToBuildQueue(Employee.java, false, 0)
+addToBuildQueue(Company.java, false, 0)
+Rule for Company.java is null
+Cache lookup for src/Company.java
+Cache hit 1268386336000:1268386336000
+Target Company.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+addToBuildQueue(build/classes/Company.class, false, 0)
+Rule for build/classes/Company.class is AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ]
+Dependency lookup for Company.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/Company.class
+Lookup done 2 dependencies found.
+adding depend name Company.java
+adding depend name Employee.java
+adding depend rule cpmake.rules.DirectoryRule@1bc887b
+rule dependents 3
+addToBuildQueue(Company.java, false, 0)
+addToBuildQueue(Employee.java, false, 0)
+addToBuildQueue(build/classes, false, 0)
+Writing cache
+Build time: 00:00:00
+Reading cache
+  Read src/Company.java  Read src/Employee.java  Read src/cpmaketest.javaAddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Build file = build.bshProcessing build.bsh
+===============================================
+AddRule() null cpmake.rules.PatternRule@184ec44
+AddRule() null cpmake.rules.DirectoryRule@1bc887b
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null cpmake.rules.DirectoryRule@14c194d
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Building target compile
+PatternRule source : target pairs
+  Employee.java : build/classes/Employee.class
+  cpmaketest.java : build/classes/cpmaketest.class
+  Company.java : build/classes/Company.class
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+AddRule() null AbstractSimpleRule(null) []
+Adding rule name: clean
+Adding rule name: help
+Adding rule name: ant
+Add target build.xml
+Adding rule for build.xml
+Adding rule name: compile
+Add target build/classes
+Adding rule for build/classes
+Adding rule name: jar
+Add target build/jar/test.jar
+Adding rule for build/jar/test.jar
+Add target build/jar
+Adding rule for build/jar
+Adding rule name: javadoc
+Adding rule name: test
+Add target build/classes/Employee.class
+Adding rule for build/classes/Employee.class
+Add target build/classes/cpmaketest.class
+Adding rule for build/classes/cpmaketest.class
+Add target build/classes/Company.class
+Adding rule for build/classes/Company.class
+addToBuildQueue(compile, true, 0)
+Rule for compile is cpmake.rules.PatternRule@184ec44
+Comparing source: Employee.java to Employee.class
+Comparing source: cpmaketest.java to cpmaketest.class
+Comparing source: Company.java to Company.class
+adding depend rule AbstractSimpleRule(null) [build/classes/Employee.class, ]
+adding depend rule AbstractSimpleRule(null) [build/classes/cpmaketest.class, ]
+adding depend rule AbstractSimpleRule(null) [build/classes/Company.class, ]
+rule dependents 3
+addToBuildQueue(build/classes/Employee.class, false, 0)
+Rule for build/classes/Employee.class is AbstractSimpleRule(MakeEngine-NamedRule-0) [build/classes/Employee.class, ]
+Dependency lookup for Employee.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/Employee.class
+Lookup done 1 dependencies found.
+adding depend name Employee.java
+adding depend rule cpmake.rules.DirectoryRule@1bc887b
+rule dependents 2
+addToBuildQueue(Employee.java, false, 0)
+Rule for Employee.java is null
+Cache lookup for src/Employee.java
+Cache hit 1268384162000:1268384162000
+Target Employee.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+Rule for build/classes is cpmake.rules.DirectoryRule@1bc887b
+rule dependents 0
+addToBuildQueue(build/classes/cpmaketest.class, false, 0)
+Rule for build/classes/cpmaketest.class is AbstractSimpleRule(MakeEngine-NamedRule-1) [build/classes/cpmaketest.class, ]
+Dependency lookup for cpmaketest.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/cpmaketest.class
+Lookup done 3 dependencies found.
+adding depend name cpmaketest.java
+adding depend name Employee.java
+adding depend name Company.java
+adding depend rule cpmake.rules.DirectoryRule@1bc887b
+rule dependents 4
+addToBuildQueue(cpmaketest.java, false, 0)
+Rule for cpmaketest.java is null
+Cache lookup for src/cpmaketest.java
+Cache hit 1268387664000:1268387664000
+Target cpmaketest.java is a file with no rule
+addToBuildQueue(Employee.java, false, 0)
+addToBuildQueue(Company.java, false, 0)
+Rule for Company.java is null
+Cache lookup for src/Company.java
+Cache hit 1268386336000:1268386336000
+Target Company.java is a file with no rule
+addToBuildQueue(build/classes, false, 0)
+addToBuildQueue(build/classes/Company.class, false, 0)
+Rule for build/classes/Company.class is AbstractSimpleRule(MakeEngine-NamedRule-2) [build/classes/Company.class, ]
+Dependency lookup for Company.java
+Lookup done 0 dependencies found.
+Dependency lookup for build/classes/Company.class
+Lookup done 2 dependencies found.
+adding depend name Company.java
+adding depend name Employee.java
+adding depend rule cpmake.rules.DirectoryRule@1bc887b
+rule dependents 3
+addToBuildQueue(Company.java, false, 0)
+addToBuildQueue(Employee.java, false, 0)
+addToBuildQueue(build/classes, false, 0)
+Writing cache
+Build time: 00:00:00

@@ -1,0 +1,16 @@
+Targets marked with a * have already been printed
+compile-tests
+javadoc
+	build/doc
+definitions
+help
+clean
+jar
+	build/jar
+	compile
+		build/classes/test/Main.class
+			test/Main.java
+			build/classes
+ivy-retrieve
+	ivy-resolve
+ant

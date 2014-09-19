@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+
+<definitions xmlns="http://www.cpmake.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.cpmake.org ../schema/definitions.xsd">
+	<definition name="vc7_compiler" command="cl.exe">
+		
+		<mode>debug</mode>
+		<mode>release</mode>
+		
+		<mode>library</mode>
+		<mode>executable</mode>
+	
+		<property name="compiler">Visual C</property>
+		<property name="platform">windows</property>
+		<property name="object_extension">.obj</property>
+		
+		<option name="warning_low" command="compile" priority="2">/W1</option>
+		<option name="warning_med" command="compile" priority="2">/W3</option>
+		<option name="warning_hi" command="compile" priority="2">/W4</option>
+		<option name="error_on_warning" command="compile" priority="2">/WX</option>
+		
+		<option name="force_include" command="compile" priority="1" fix_slash="true"
+				pattern="(.+)">/FI$1</option>
+		<option name="user_include_path" command="compile" fix_slash="true"
+				priority="4" pattern="(.+)">/I $1</option>
+		<option name="system_include_path" command="compile" fix_slash="true"
+				priority="4" pattern="(.+)">/I $1</option>
+		<option name="user_define" command="compile" priority="2"
+				pattern="(.+)">/D$1</option>
+		
+		<option>/c /nologo /EHsc /DWINDOWS</option>
+		<option mode="debug">/Zi /LDd /MDd /Od /RTC1 /D_DEBUG /DDEBUG</option>
+		<option mode="release">/LD /MD /O2 /Gy /DNDEBUG</option>
+		
+		<option name="source_file" fix_slash="true"
+				pattern="(.+)">$1</option>
+		<option name="object_file" fix_slash="true"
+				pattern="((.*\\)([^\\]*\.))(.*)">/Fd$1pdb /Fo$2</option> 
+				
+	</definition>
+
+	<definition name="vc7_linker" command="link.exe">	
+		<mode>debug</mode>
+		<mode>release</mode>
+		
+		<mode>library</mode>
+		<mode>executable</mode>	
+		
+		<property name="compiler">Visual C</property>
+		<property name="platform">windows</property>
+		<property name="library_prefix"></property>
+		<property name="library_sufix">.dll</property>
+		<property name="archive_prefix"></property>
+		<property name="archive_sufix">.lib</property>
+		<property name="executable_prefix"></property>
+		<property name="executable_sufix">.exe</property>
+	
+		<option>/nologo /subsystem:console /nodefaultlib /incremental:no /MAPINFO:EXPORTS /MACHINE:X86</option>
+		<option mode="debug">/debug</option>
+		<option mode="release">/opt:ref</option>
+		
+		<option name="library_paths" fix_slash="true" 
+				pattern="(.+)">/libpath:$1</option>
+				
+		<option name="user_libraries" 
+				pattern="(.+)">$1.lib</option>
+		
+		<option mode="library">/dll</option>
+		
+		<option name="out_file" fix_slash="true"
+				pattern="(.*\.)(.*)" mode="library">/out:$1dll /pdb:$1pdb /map:$1map</option>
+				
+		<option name="out_file" fix_slash="true"
+				pattern="(.*\.)(.*)" mode="executable">/out:$1exe /pdb:$1pdb /map:$1map</option> 
+		
+		<option>kernel32.lib</option>
+		<option mode="debug">msvcrtd.lib msvcprtd.lib</option>
+		<option mode="release">msvcrt.lib msvcprt.lib</option>
+		
+		<option name="object_files" fix_slash="true"
+				pattern="(.+)">$1</option>
+		
+
+	</definition>
+
+<!-- ======================================================================= -->
+	<definition name="linux_gcc_compiler" command="g++">
+		<mode>debug</mode>
+		<mode>release</mode>
+		
+		<property name="compiler">GNU Gcc</property>
+		<property name="platform">linux</property>
+		<property name="object_extension">.o</property>
+		
+		<option mode="debug">-g -fno-inline -DDEBUG -DPRECHECKIN=1 -D_DEBUG</option>
+		<option mode="release">-O2 -DNDEBUG -DPRECHECKIN=0</option>
+		
+		<option name="force_include" fix_slash="true"
+				pattern="(.+)">-include $1</option>
+		
+		<option name="warning_low"></option>
+		<option name="warning_med"></option>
+		<option name="warning_hi">-Wall</option>
+		<option name="error_on_warning">-Werror</option>
+		
+		<option name="user_define"	pattern="(.+)">-D$1</option>
+		<option name="user_include_path" fix_slash="true" pattern="(.+)">-I $1</option>
+		<option name="system_include_path" fix_slash="true" pattern="(.+)">-I $1</option>
+		
+		<option name="object_file" fix_slash="true" pattern="(.+)">-o $1</option>
+		<option name="source_file" fix_slash="true" pattern="(.+)">-c $1</option>
+		
+		
+	</definition>
+	
+	<definition name="linux_gcc_linker" command="g++">
+		<mode>debug</mode>
+		<mode>release</mode>
+		
+		<mode>library</mode>
+		<mode>executable</mode>
+	
+		<property name="compiler">GNU Gcc</property>
+		<property name="platform">linux</property>
+		<property name="library_prefix">lib</property>
+		<property name="library_sufix">.so</property>
+		<property name="archive_prefix">lib</property>
+		<property name="archive_sufix">.a</property>
+		<property name="executable_prefix"></property>
+		<property name="executable_sufix"></property>
+	
+		
+		<option name="out_file" fix_slash="true" pattern="(.+)">-o $1</option>
+				
+		<option mode="release">--strip-debug</option>
+		
+		<option>-Wl,-Bsymbolic</option>
+		
+		<option mode="library">-shared</option>
+		<option mode="executable">-Wl,-rpath=.</option>
+		
+		<option name="object_files" fix_slash="true" pattern="(.+)">$1</option>
+		
+		<option name="library_paths" pattern="(.+)">-L $1 -Wl,-rpath $1</option>
+				
+		<!-- <option>-L/usr/lib /usr/lib/libstdc++.so.6</option> -->
+		<option>-L/usr/lib/i386-linux-gnu /usr/lib/i386-linux-gnu/libstdc++.so.6</option>
+		
+		<option name="user_libraries" pattern="(.+)">-l$1</option>
+	</definition>
+	
+	
+</definitions>

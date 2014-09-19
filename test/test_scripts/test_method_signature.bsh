@@ -1,0 +1,13 @@
+
+import java.util.*;
+
+single = "Single";
+list = new String[] {"One", "Two", "Three"};
+array = Arrays.asList(list);
+
+javacDef = saw.getDefinition("sun_javac");
+
+javacDef.set("source", single);
+javacDef.set("source", list);
+javacDef.set("source", array);
+

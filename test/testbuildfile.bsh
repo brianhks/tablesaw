@@ -1,0 +1,47 @@
+//Build script used for unit testing
+
+import tablesaw.*;
+
+tempdir = "temp";
+
+make.createDirectoryRule(tempdir, null, true);
+	
+//==============================================================================
+//==-- MULTIPLE TARGET TEST --==
+file1 = tempdir+"/file1";
+file2 = tempdir+"/file2";
+
+files = new String[] {
+	file1,
+	file2 };
+	
+make.createExplicitRule(files, tempdir, "createFiles", true);
+callCount = 0;
+void createFiles(CPMakeRule rule)
+	{
+	callCount ++;
+	if (callCount > 1)
+		make.throwException("Rule Called Twice");
+		
+	make.touch(file1);
+	make.touch(file2);
+	}
+
+make.createPhonyRule("multiTargetTest", files, null);
+	
+//==============================================================================
+
+	
+//==============================================================================
+//==-- TEST RULE --==
+/*To add more test add them as dependencies to the test rule*/
+make.createPhonyRule("test", new String[] {
+		"multiTargetTest",
+		}, "test");
+		
+void test(CPMakeRule rule)
+	{
+	print("Build unit test ran successfully");
+	}
+	
+make.setDefaultTarget("test");

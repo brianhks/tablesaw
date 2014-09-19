@@ -1,0 +1,225 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{02CC5BCD-E423-4ED3-B552-B4D0A2C7CACF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sample.DataService</RootNamespace>
+    <AssemblyName>test-assembly</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <ApplicationManifest>npds-outlook.exe.manifest</ApplicationManifest>
+    <ApplicationIcon>..\resources\images\retention_app.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\build\client\Managed\debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <CodeAnalysisRules>-Microsoft.Design#CA1021;-Microsoft.Design#CA1031;-Microsoft.Globalization#CA1301;-Microsoft.Globalization#CA1302;-Microsoft.Globalization#CA1308;-Microsoft.Globalization#CA1306;-Microsoft.Globalization#CA1304;-Microsoft.Globalization#CA1305;-Microsoft.Globalization#CA2101;-Microsoft.Globalization#CA1300;-Microsoft.Globalization#CA1307;-Microsoft.Globalization#CA1309;-Microsoft.Naming#CA1702;-Microsoft.Naming#CA1700;-Microsoft.Naming#CA1712;-Microsoft.Naming#CA1713;-Microsoft.Naming#CA1714;-Microsoft.Naming#CA1709;-Microsoft.Naming#CA1704;-Microsoft.Naming#CA1708;-Microsoft.Naming#CA1715;-Microsoft.Naming#CA1710;-Microsoft.Naming#CA1720;-Microsoft.Naming#CA1707;-Microsoft.Naming#CA1722;-Microsoft.Naming#CA1711;-Microsoft.Naming#CA1716;-Microsoft.Naming#CA1717;-Microsoft.Naming#CA1725;-Microsoft.Naming#CA1719;-Microsoft.Naming#CA1721;-Microsoft.Naming#CA1701;-Microsoft.Naming#CA1703;-Microsoft.Naming#CA1724;-Microsoft.Naming#CA1726;-Microsoft.Performance#CA1800;-Microsoft.Performance#CA1804;-Microsoft.Security#CA2122</CodeAnalysisRules>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\build\client\Managed\release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CookComputing.XmlRpcV2, Version=2.1.0.3, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ThirdParty\Xmlrpc\CookComputing.XmlRpcV2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ThirdParty\Office\2003\Microsoft.Office.Interop.Outlook.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=1.0.0.505, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ThirdParty\NLog\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Common\CommonDelegates.cs" />
+    <Compile Include="Common\CommonStructures.cs" />
+    <Compile Include="Common\MAPIErrorCodes.cs" />
+    <Compile Include="EmailApplicationFactory.cs" />
+    <Compile Include="EmailApplication\AttachmentInfo.cs" />
+    <Compile Include="EmailApplication\AttachmentNotFoundException.cs" />
+    <Compile Include="EmailApplication\EmailNotFoundException.cs" />
+    <Compile Include="EmailApplication\EmailMessage.cs" />
+    <Compile Include="EmailApplication\IEmailApplicationMonitoringAgent.cs" />
+    <Compile Include="EmailApplication\EmailException.cs" />
+    <Compile Include="EmailApplication\FolderNotFoundException.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionApplication.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionFolderBase.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionApplicationMonitoringAgent.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionAttachment.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionEmail.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionFactory.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionFolder.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionProfile.cs" />
+    <Compile Include="EmailApplication\Impl\RedemptionStore.cs" />
+    <Compile Include="EmailApplication\Impl\StoreEventManager.cs" />
+    <Compile Include="EmailApplication\IOutlook.cs" />
+    <Compile Include="EmailApplication\IRedeptionApplication.cs" />
+    <Compile Include="EmailApplication\OutlookAttachment.cs" />
+    <Compile Include="EmailApplication\OutlookCanonicalPath.cs" />
+    <Compile Include="EmailApplication\OutlookFolder.cs" />
+    <Compile Include="EmailApplication\OutlookProfile.cs" />
+    <Compile Include="EmailApplication\OutlookStore.cs" />
+    <Compile Include="EmailApplication\StoreNotFoundException.cs" />
+    <Compile Include="EmailApplication\WrongProfileException.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IOutlookManager.cs" />
+    <Compile Include="IOutlookPreferences.cs" />
+    <Compile Include="IOutlookRepositoryEventSource.cs" />
+    <Compile Include="IOutlookWatcherEventHandler.cs" />
+    <Compile Include="OutlookClassificationConfigurationService.cs" />
+    <Compile Include="OutlookContainerFile.cs" />
+    <Compile Include="DataService.cs" />
+    <Compile Include="OutlookAttachmentDisplayPath.cs" />
+    <Compile Include="OutlookDisplayPath.cs" />
+    <Compile Include="OutlookDomainLayer.cs" />
+    <Compile Include="OutlookEmailDisplayPath.cs" />
+    <Compile Include="OutlookLocationBasedClassificationStrategy.cs" />
+    <Compile Include="OutlookManager.cs" />
+    <Compile Include="OutlookLocationBasedClassificationStorage.cs" />
+    <Compile Include="OutlookRepositoryFile.cs" />
+    <Compile Include="OutlookPreferenceManager.cs" />
+    <Compile Include="OutlookPreferences.cs" />
+    <Compile Include="OutlookAdapter.cs" />
+    <Compile Include="OutlookRepositoryFileAttachment.cs" />
+    <Compile Include="OutlookRepositoryFileEmail.cs" />
+    <Compile Include="OutlookRepositorySession.cs" />
+    <Compile Include="OutlookScanPolicy.cs" />
+    <Compile Include="OutlookSessionFactory.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="..\NLog.dll.nlog">
+      <Link>NLog.dll.nlog</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\NLogBase.config">
+      <Link>NLogBase.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App.config" />
+    <Content Include="npds-outlook.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="npds-outlook.config.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="npds-outlook.exe.manifest" />
+    <None Include="npds-outlook.exe.nlog">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="OutlookDriver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Classification\Classification.csproj">
+      <Project>{14705696-70E6-4C55-9E85-71338390E774}</Project>
+      <Name>Classification %28Classification\Classification%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{65A6356F-A5C7-4723-9EE2-C4DB0B1BC1A0}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService.Common\DataService.Common.csproj">
+      <Project>{E90A5CDA-D8DF-47C4-881D-83442BD76077}</Project>
+      <Name>DataService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj">
+      <Project>{4DEFC5E4-5149-4BA7-80D6-5B08DFDCED2A}</Project>
+      <Name>FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Retention.API\Retention.API.csproj">
+      <Project>{E98D7B71-28C7-46FE-9B76-D6F9F9FB1FD6}</Project>
+      <Name>Retention.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UI\UI.csproj">
+      <Project>{7C9807FD-9013-4937-840A-889BC1797368}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Versioning\Versioning.csproj">
+      <Project>{2C9097C2-C853-4D91-A469-52F4B7E5D1D1}</Project>
+      <Name>Versioning</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Redemption">
+      <Guid>{2D5E2D34-BED5-4B9F-9793-A31E26E6806E}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>regsvr32 /s $(SolutionDir)ThirdParty\Redemption\RedemptionSample.dll</PreBuildEvent>
+  </PropertyGroup>
+</Project>

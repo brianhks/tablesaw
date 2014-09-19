@@ -1,0 +1,121 @@
+/*
+ * Copyright (c) 2010, Brian Hawkins
+ * Permission is granted to use this code without restriction as long
+ * as this copyright notice appears in all source files.
+ */
+ 
+/**
+	This script demonstrates how to call ant task from within a cpmake build
+	script.
+*/
+ 
+import tablesaw.*;
+import tablesaw.rules.*;
+import tablesaw.java.*;
+import tablesaw.ant.AntTask;
+
+
+print("===============================================");
+srcDir = "src/java";
+classDir = "build/classes";
+jarDir = "build/jar";
+javadocDir = "build/javadoc";
+target = jarDir+"/test.jar";
+
+
+make.addClassPath(make.getProperty("JAVA_HOME")+"/lib/tools.jar");
+
+//This initializes the class path with ant jars based on ANT_HOME being set
+make.initializeAnt();
+
+//We must add junit to the runtime classpath in order to use the junit ant task
+make.addClassPath("../../ext/junit-4.8.1.jar");
+
+classpath = new ClassPath(classDir);
+classpath.addPath("../../ext/junit-4.8.1.jar");
+
+
+compileRule = new SimpleRule("compile").alwaysRun()
+		.setMakeAction("doCompile")
+		.addDepend(new DirectoryRule(classDir));
+
+void doCompile(Rule rule)
+	{
+	print("Compile source");
+	javac = new AntTask("javac").set("srcdir", srcDir)
+			.set("destdir", classDir)
+			.set("classpath", classpath.toString());
+	
+	javac.execute();
+	}
+
+//-------------------------------------------------------------------
+//==-- COMPILE UNIT TESTS --==
+compileTestRule = new SimpleRule("compileTest").alwaysRun()
+		.setMakeAction("doCompileTest")
+		.addDepend(compileRule);
+
+void doCompileTest(Rule rule)
+	{
+	/*
+		We can either define the ant task in a script method or as in the case
+		below for jar we can pass the ant task as a MakeAction to the rule
+	*/
+	print("Compiling test");
+	javac = new AntTask("javac").set("srcdir", "src/test/")
+			.set("destdir", classDir)
+			.set("classpath", classpath.toString());
+	
+	javac.execute();
+	}
+
+//-------------------------------------------------------------------
+//==-- RULE FOR CREATING JAR --==
+jar = new AntTask("jar").set("destfile", target)
+			.set("manifest", "manifest.txt");
+jar.add("fileset").set("dir", classDir);
+
+jarRule = new SimpleRule("jar").alwaysRun()
+		.addDepend(compileRule)
+		.setMakeAction(jar)
+		.addDepend(new DirectoryRule(jarDir));
+		
+//-------------------------------------------------------------------
+//==-- CREATE JAVADOCS --==
+javadocRule = new SimpleRule("javadoc").alwaysRun()
+		.addDepend(new DirectoryRule(javadocDir))
+		.setMakeAction("doJavadoc");
+void doJavadoc(Rule rule)
+	{
+	javadoc = new AntTask("javadoc").set("sourcepath", srcDir)
+			.set("destdir", javadocDir);
+	
+	javadoc.execute();
+	}
+	
+//-------------------------------------------------------------------
+//==-- TEST --==
+//make.createPhonyRule("test", jp.getJarFileTarget(), "test");
+testRule = new SimpleRule("test").setMakeAction("doTest").alwaysRun()
+		.addDepend(compileTestRule);
+void doTest(Rule rule)
+	{
+	print("Running test");
+	classpath.addPaths(make.getAntClassPath());
+	
+	junit = new cpmake.ant.AntTask("junit").set("printsummary", "off")
+			.set("showoutput", false)
+			.set("fork", "on");
+	
+	junit.add("classpath").set("path", classpath.toString());
+	junit.add("formatter").set("type", "plain").set("usefile", false);
+	
+	/*
+		I could also add the test by using the class name directly like so
+		junit.add("test", new JUnitTest("anttest.TestClass"));
+	*/
+	junit.add("test").set("name", "anttest.TestClass");
+	junit.execute();
+	}	
+
+

@@ -1,0 +1,37 @@
+<project name="tablesaw" basedir="." default="compile">
+	<path id="tablesaw-path">
+		<pathelement location="/media/CORSAIR/code/tablesaw_google/trunk/build/jar/tablesaw.jar"/>
+		<pathelement location="/home/bhawkins/tablesaw/bsh-2.0b4.jar"/>
+	</path>
+
+	<target name="jar" description="">
+		<java classname="tablesaw.Tablesaw" fork="true" classpathref="tablesaw-path" failonerror="true">
+			<arg value="jar"/>
+		</java>
+	</target>
+
+	<target name="compile" description="">
+		<java classname="tablesaw.Tablesaw" fork="true" classpathref="tablesaw-path" failonerror="true">
+			<arg value="compile"/>
+		</java>
+	</target>
+
+	<target name="clean" description="Removes the contents of any directory rule created in the build script">
+		<java classname="tablesaw.Tablesaw" fork="true" classpathref="tablesaw-path" failonerror="true">
+			<arg value="clean"/>
+		</java>
+	</target>
+
+	<target name="test" description="">
+		<java classname="tablesaw.Tablesaw" fork="true" classpathref="tablesaw-path" failonerror="true">
+			<arg value="test"/>
+		</java>
+	</target>
+
+	<target name="help" description="Prints named targets in build script">
+		<java classname="tablesaw.Tablesaw" fork="true" classpathref="tablesaw-path" failonerror="true">
+			<arg value="help"/>
+		</java>
+	</target>
+
+</project>

@@ -1,0 +1,35 @@
+
+<slickxml package="cpmake.parsers" destination="src/cpmake/parsers">
+	<parser name="CSProjectParser">
+		<object tag="Project" name="Project">
+			<property name="AssemblyName">
+				<element name="AssemblyName"/>
+			</property>
+			
+			<property name="OutputType">
+				<element name="OutputType"/>
+			</property>
+			
+			<property name="Platform">
+				<element name="Platform"/>
+			</property>
+			
+			<object tag="Compile" name="Compile">
+				<property name="Include">
+					<attribute>Include</attribute>
+				</property>
+			</object>
+			
+			<object tag="Reference" name="Reference">
+				<property name="Include">
+					<attribute>Include</attribute>
+				</property>
+				<property name="HintPath">
+					<element name="HintPath"/>
+				</property>
+			</object>
+			
+		</object>
+	</parser>
+			
+</slickxml>

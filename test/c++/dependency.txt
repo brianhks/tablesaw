@@ -1,0 +1,7 @@
+Targets marked with a * have already been printed
+help
+clean
+test
+	build/linux/tablesawtest
+definitions
+ant

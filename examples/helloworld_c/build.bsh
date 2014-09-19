@@ -1,0 +1,34 @@
+import cpmake.*;
+import cpmake.rules.*;
+
+new SimpleRule("compile").setDescription("Compiles source files")
+		.addTarget("a.out")
+		.addSource("hello.c")
+		.setMakeAction("doCompile");
+		
+void doCompile(Rule rule)
+	{
+	print("Compiling...");
+	make.exec("gcc hello.c");
+	}
+	
+	
+new SimpleRule("test").setDescription("Test runs a.out")
+		.addDepend("compile")
+		.setMakeAction("doTest");
+		
+void doTest(Rule rule)
+	{
+	make.exec("./a.out");
+	}
+	
+	
+new SimpleRule("clean").setDescription("Cleans a.out file")
+		.setMakeAction("doClean");
+		
+void doClean(Rule rule)
+	{
+	make.delete("a.out");
+	}
+	
+make.setDefaultTarget("compile");
