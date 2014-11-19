@@ -9,7 +9,7 @@
 	<dependencies>
 		<dependency org="com.google.guava" name="guava" rev="14.0" />
 
-		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test" />
+		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->default" />
 
 		<dependency org="org.apache.zookeeper" name="zookeeper" rev="3.4.5" transitive="false" />
 

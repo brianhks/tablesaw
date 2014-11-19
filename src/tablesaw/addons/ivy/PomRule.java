@@ -58,6 +58,9 @@ public class PomRule extends AbstractRule<PomRule>
 	public static final String SCM_CONNECTION_PROPERTY = "tablesaw.java.ivy.scm_connection";
 
 	private static final String MAVEN_NS = "http://maven.apache.org/POM/4.0.0";
+
+	private static final String DEFAULT_SCOPE = "default";
+	private static final String TEST_SCOPE = "test";
 	
 	//This static map helps with indenting the pom file so it doesn't look like crap.
 	private static final Map<String, Integer> s_indentMap = new HashMap<String, Integer>();
@@ -99,6 +102,7 @@ public class PomRule extends AbstractRule<PomRule>
 	private final File m_pomFile;
 	private final Tablesaw m_tablesaw;
 	private final ResolveRule m_resolveRule;
+	private final ResolveRule m_testResolveRule;
 
 	private String m_artifactId;
 	private String m_groupId;
@@ -115,7 +119,7 @@ public class PomRule extends AbstractRule<PomRule>
 	private List<Triple<String, String, String>> m_developers;
 
 
-	/*package*/ PomRule(File ivyFile, File pomFile, ResolveRule resolveRule)
+	/*package*/ PomRule(File ivyFile, File pomFile, ResolveRule resolveRule, ResolveRule testResolveRule)
 		{
 		super();
 		this.setName("ivy-pom");
@@ -123,6 +127,7 @@ public class PomRule extends AbstractRule<PomRule>
 		m_ivyFile = ivyFile;
 		m_pomFile = pomFile;
 		m_resolveRule = resolveRule;
+		m_testResolveRule = testResolveRule;
 		addDepend(m_resolveRule);
 
 		m_licenses = new ArrayList<Triple<String, String, String>>();
@@ -245,11 +250,23 @@ public class PomRule extends AbstractRule<PomRule>
 			setTransParam(transformer, "scm_connection", getProperty(m_scmConnection, SCM_CONNECTION_PROPERTY));
 
 			//Set of resolved dependencies for the specified configuration
-			Set<ModuleRevisionId> resolvedDependencies = new HashSet<ModuleRevisionId>();
+			Map<ModuleRevisionId, String> resolvedDependencies = new HashMap<ModuleRevisionId, String>();
 			ArtifactDownloadReport[] allArtifactsReports = m_resolveRule.getReport().getAllArtifactsReports();
 			for (ArtifactDownloadReport adreport : allArtifactsReports)
 				{
-				resolvedDependencies.add(adreport.getArtifact().getModuleRevisionId());
+				resolvedDependencies.put(adreport.getArtifact().getModuleRevisionId(), DEFAULT_SCOPE);
+				}
+
+			//Add in test dependencies
+			if (m_testResolveRule != null)
+				{
+				allArtifactsReports = m_testResolveRule.getReport().getAllArtifactsReports();
+				for (ArtifactDownloadReport adreport : allArtifactsReports)
+					{
+					ModuleRevisionId moduleRevisionId = adreport.getArtifact().getModuleRevisionId();
+					if (!resolvedDependencies.containsKey(moduleRevisionId))
+						resolvedDependencies.put(moduleRevisionId, TEST_SCOPE);
+					}
 				}
 
 			//Read in the ivy.xml file
@@ -268,9 +285,13 @@ public class PomRule extends AbstractRule<PomRule>
 
 				ModuleRevisionId moduleRevisionId = new ModuleRevisionId(new ModuleId(node.getAttribute("org"), node.getAttribute("name")), node.getAttribute("rev"));
 
-				if (!resolvedDependencies.contains(moduleRevisionId))
+				if (!resolvedDependencies.containsKey(moduleRevisionId))
 					{
 					node.getParentNode().removeChild(node);
+					}
+				else if (resolvedDependencies.get(moduleRevisionId).equals(TEST_SCOPE))
+					{
+					node.setAttribute("scope", "test");
 					}
 				}
 

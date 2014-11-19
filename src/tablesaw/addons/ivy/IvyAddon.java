@@ -130,7 +130,22 @@ public class IvyAddon
 	public PomRule createPomRule(String pomFile, ResolveRule resolveRule) throws TablesawException
 		{
 		ensureSetup();
-		return (new PomRule(m_ivyFile, new File(pomFile), resolveRule));
+		return (new PomRule(m_ivyFile, new File(pomFile), resolveRule, null));
+		}
+
+	/**
+	 Creates a rule to write a pom file that includes test dependencies
+	 @param pomFile Name of the pom file to write
+	 @param resolveRule resolve rule to use when adding dependencies to the pom.
+	 @param testResolveRule resolve rule to use when adding test dependencies to pom.
+	 @return
+	 @throws TablesawException
+	 */
+	public PomRule createPomRule(String pomFile, ResolveRule resolveRule,
+			ResolveRule testResolveRule) throws TablesawException
+		{
+		ensureSetup();
+		return (new PomRule(m_ivyFile, new File(pomFile), resolveRule, null));
 		}
 
 	public PublishRule createPublishRule(String resolverName, ResolveRule resolveRule) throws TablesawException

@@ -24,7 +24,7 @@ etcdir = "etc";
 intdir = extdir+"/interpreters";
 tempdir = "temp";
 jardir = blddir+"/jar";
-buildVersion = "1.2.1";
+buildVersion = "1.2.2";
 versionSrcFile = "tablesaw/Version.java";
 javaDocDir = "../tablesaw.javadoc";
 
