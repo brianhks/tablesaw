@@ -145,7 +145,7 @@ public class IvyAddon
 			ResolveRule testResolveRule) throws TablesawException
 		{
 		ensureSetup();
-		return (new PomRule(m_ivyFile, new File(pomFile), resolveRule, null));
+		return (new PomRule(m_ivyFile, new File(pomFile), resolveRule, testResolveRule));
 		}
 
 	public PublishRule createPublishRule(String resolverName, ResolveRule resolveRule) throws TablesawException

@@ -129,6 +129,8 @@ public class PomRule extends AbstractRule<PomRule>
 		m_resolveRule = resolveRule;
 		m_testResolveRule = testResolveRule;
 		addDepend(m_resolveRule);
+		if (m_testResolveRule != null)
+			addDepend(m_testResolveRule);
 
 		m_licenses = new ArrayList<Triple<String, String, String>>();
 		m_developers = new ArrayList<Triple<String, String, String>>();
