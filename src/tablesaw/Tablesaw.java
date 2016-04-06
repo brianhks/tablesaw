@@ -529,16 +529,17 @@ public class Tablesaw
 	private static void printHelp()
 		{
 		System.out.println("Cross Platform Make Utility (version = " + Version.getVersion() +" build = "+Version.getBuild()+")");
-		System.out.println("Copyright (C) 2012, Brian Hawkins");
+		System.out.println("Copyright (C) 2015, Brian Hawkins");
 		System.out.println("Licensed under GNU General Public License\n");
 		System.out.println("Tablesaw Command line help.");
-		System.out.println("Usage: java -jar tablesaw.jar [-v][-d] [-D <key=value>] [-f <build file>] [-t <thread count>] [<targets>]");
+		System.out.println("Usage: java -jar tablesaw.jar [-v][-d] [-D <key=value>] [-f <build file>] [-t <thread count>] [-c <seconds>] [<targets>]");
 		System.out.println("   -v : Verbose output");
 		System.out.println("   -f : Build file to process");
 		System.out.println("   -t : Number of threads to use");
 		System.out.println("   -d : Print debug messages");
 		System.out.println("   -a : System beep when build is done");
 		System.out.println("   -D : Add a define to the Tablesaw properties");
+		System.out.println("   -c : Continuous rebuild (parameter is decimal number of seconds to wait between rebuild ie 1.5)");
 		
 		}
 		

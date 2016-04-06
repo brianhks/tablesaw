@@ -119,7 +119,15 @@ public class PomRule extends AbstractRule<PomRule>
 	private List<Triple<String, String, String>> m_developers;
 
 
-	/*package*/ PomRule(File ivyFile, File pomFile, ResolveRule resolveRule, ResolveRule testResolveRule)
+	/**
+	 Normally PomRule objects are not created directly but, through calling
+	 {@link tablesaw.addons.ivy.IvyAddon#createPomRule(String, ResolveRule)}
+	 @param ivyFile Ivy file to read from
+	 @param pomFile Target pom file to create
+	 @param resolveRule Resolve rule to use
+	 @param testResolveRule Test resolve rule to use
+	 */
+	public PomRule(File ivyFile, File pomFile, ResolveRule resolveRule, ResolveRule testResolveRule)
 		{
 		super();
 		this.setName("ivy-pom");

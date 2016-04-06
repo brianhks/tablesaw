@@ -78,6 +78,11 @@ public class GZipRule extends AbstractRule<GZipRule>
 		return (Collections.singleton(m_targetFile));
 		}
 
+	public String getTarget()
+		{
+		return (m_targetFile);
+		}
+
 	public GZipRule alwaysRun()
 		{
 		m_alwaysRun = true;

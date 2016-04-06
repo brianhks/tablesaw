@@ -64,6 +64,10 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 	private Date m_publicationDate = new Date();
 	private final List<IvyArtifact> m_ivyArtifacts = new ArrayList<IvyArtifact>();
 
+	private String m_groupId;
+	private String m_artifactId;
+	private String m_version;
+
 
 	public PublishRule(File ivyFile, String resolverName, ResolveRule resolveRule)
 		{
@@ -85,12 +89,18 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 
 	public PublishRule publishMavenMetadata()
 		{
+		return (publishMavenMetadata("maven-metadata.xml"));
+		}
+
+	public PublishRule publishMavenMetadata(String metadataFileName)
+		{
 		String buildFolder = m_make.getProperty(Tablesaw.PROP_BUILD_DIRECTORY);
-		final String buildTarget = buildFolder+"/maven-metadata.xml";
+		final String buildTarget = buildFolder+"/"+metadataFileName;
 
 		SimpleRule mavenMetaRule = new SimpleRule()
 				.addTarget(buildTarget)
 				.addDepend(m_resolveRule)
+				.addDepend(buildFolder)
 				.alwaysRun()
 				.setMakeAction(new MakeAction()
 				{
@@ -102,7 +112,7 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 						String versionTimestamp = s_mavenSnapshotDate.format(m_publicationDate);
 						String updatedTimestamp = s_mavenSnapshotUpdateDate.format(m_publicationDate);
 
-						String version = getRequiredProperty(m_make, JavaProgram.PROGRAM_VERSION_PROPERTY);
+						String version = m_version != null ? m_version : getRequiredProperty(m_make, JavaProgram.PROGRAM_VERSION_PROPERTY);
 
 						if (version.contains("-SNAPSHOT"))
 							version = version.replace("-SNAPSHOT", "");
@@ -116,14 +126,14 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 						document.appendChild(metadata);
 
 						metadata.appendChild(createNode(document, "groupId",
-								getRequiredProperty(m_make, PomRule.GROUP_ID_PROPERTY)));
+								m_groupId != null ? m_groupId : getRequiredProperty(m_make, PomRule.GROUP_ID_PROPERTY)));
 
 						metadata.appendChild(createNode(document, "artifactId",
-								getRequiredProperty(m_make, JavaProgram.PROGRAM_NAME_PROPERTY)));
+								m_artifactId != null ? m_artifactId : getRequiredProperty(m_make, JavaProgram.PROGRAM_NAME_PROPERTY)));
 
 						//Using the raw version as we may have removed -SNAPSHOT above and we want it here
 						metadata.appendChild(createNode(document, "version",
-								getRequiredProperty(m_make, JavaProgram.PROGRAM_VERSION_PROPERTY)));
+								m_version != null ? m_version : getRequiredProperty(m_make, JavaProgram.PROGRAM_VERSION_PROPERTY)));
 
 						Element versioning = document.createElement("versioning");
 						metadata.appendChild(versioning);
@@ -211,9 +221,9 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 		if (resolver == null)
 			throw new TablesawException("Unable to locate resolver '"+m_resolverName+"'");
 
-		String org = getRequiredProperty(m_make, PomRule.GROUP_ID_PROPERTY);
-		String name = getRequiredProperty(m_make, JavaProgram.PROGRAM_NAME_PROPERTY);
-		String rev = getRequiredProperty(m_make, JavaProgram.PROGRAM_VERSION_PROPERTY);
+		String org = m_groupId != null ? m_groupId : getRequiredProperty(m_make, PomRule.GROUP_ID_PROPERTY);
+		String name = m_artifactId != null ? m_artifactId : getRequiredProperty(m_make, JavaProgram.PROGRAM_NAME_PROPERTY);
+		String rev = m_version != null ? m_version : getRequiredProperty(m_make, JavaProgram.PROGRAM_VERSION_PROPERTY);
 
 		String classifier = null;
 		if (rev.contains("-SNAPSHOT"))
@@ -248,7 +258,12 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 				{
 				throw new TablesawException("Ivy publish failed", e1);
 				}
-			throw new TablesawException("Ivy publish failed", e);
+
+			if (m_overwrite || !e.getMessage().contains("overwrite"))
+				throw new TablesawException("Ivy publish failed", e);
+
+			if (m_make.isVerbose())
+				System.out.println("Ivy skipped publish of "+name+", artifact exists, overwrite == false");
 			}
 
 		}
@@ -273,6 +288,24 @@ public class PublishRule  extends AbstractSourceRule<PublishRule>
 		{
 		m_overwrite = overwrite;
 		return (this);
+		}
+
+	public PublishRule setGroupId(String groupId)
+		{
+		m_groupId = groupId;
+		return this;
+		}
+
+	public PublishRule setArtifactId(String artifactId)
+		{
+		m_artifactId = artifactId;
+		return this;
+		}
+
+	public PublishRule setVersion(String version)
+		{
+		m_version = version;
+		return this;
 		}
 
 	//===========================================================================

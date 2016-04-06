@@ -143,8 +143,8 @@
 		
 		<option name="library_paths" pattern="(.+)">-L $1 -Wl,-rpath $1</option>
 				
-		<!-- <option>-L/usr/lib /usr/lib/libstdc++.so.6</option> -->
-		<option>-L/usr/lib/i386-linux-gnu /usr/lib/i386-linux-gnu/libstdc++.so.6</option>
+		 <option>-L/usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/libstdc++.so.6</option>
+		<!--<option>-L/usr/lib/i386-linux-gnu /usr/lib/i386-linux-gnu/libstdc++.so.6</option>-->
 		
 		<option name="user_libraries" pattern="(.+)">-l$1</option>
 	</definition>
