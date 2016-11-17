@@ -217,6 +217,7 @@ public class Tablesaw
 		public List targets;
 		public Float continuous;
 		public String banner;
+		public String properties;
 		
 		public CommandLine()
 			{
@@ -231,6 +232,7 @@ public class Tablesaw
 			targets = new ArrayList();
 			continuous = null;
 			banner = null;
+			properties = null;
 			}
 		}
 		
@@ -245,7 +247,8 @@ public class Tablesaw
 		new StringListDef('D', "defines"),
 		new NoFlagArgDef("targets"),
 		new FloatDef('c', "continuous"),
-		new StringDef('b', "banner")
+		new StringDef('b', "banner"),
+		new StringDef('p', "properties")
 		};
 	
 	private static final int DO_NOT_BUILD = 0;
@@ -429,6 +432,8 @@ public class Tablesaw
 						{
 						String target = (String)it.next();
 						make = new Tablesaw();
+						if (cl.properties != null)
+							make.loadPropertiesFile(cl.properties);
 						addDefines(make, cl.defines);
 						make.init();
 						if (cl.threadCount != 1)
@@ -444,6 +449,8 @@ public class Tablesaw
 				else
 					{
 					make = new Tablesaw();
+					if (cl.properties != null)
+						make.loadPropertiesFile(cl.properties);
 					addDefines(make, cl.defines);
 					make.init();
 					if (cl.threadCount != 1)
@@ -540,6 +547,7 @@ public class Tablesaw
 		System.out.println("   -a : System beep when build is done");
 		System.out.println("   -D : Add a define to the Tablesaw properties");
 		System.out.println("   -c : Continuous rebuild (parameter is decimal number of seconds to wait between rebuild ie 1.5)");
+		System.out.println("   -p : Properties file to include");
 		
 		}
 		
@@ -647,7 +655,21 @@ public class Tablesaw
 		//System.out.println(" " + ret + " " + (dependency.lastModified() > targetTime));
 		return (ret);
 		}*/
-		
+
+	public void loadPropertiesFile(String propertiesFile) throws TablesawException
+		{
+		File propFile = new File(propertiesFile);
+		if (propFile.exists())
+			{
+			PropertiesFile pf = new PropertiesFile(propFile.getAbsolutePath());
+			loadProperties(pf);
+			}
+		else
+			{
+			throw new TablesawException("Unable to locate "+propertiesFile);
+			}
+		}
+
 //-------------------------------------------------------------------
 	private void loadPropertiesFile()
 			throws TablesawException
