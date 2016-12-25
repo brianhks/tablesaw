@@ -11,6 +11,7 @@ class ContinuousBuild
 	private ArrayList<SyncFile> m_fileList;
 	private int m_timeout;
 	private List<String> m_defines;
+	private String m_propertiesFile;
 	
 	//---------------------------------------------------------------------------
 	public ContinuousBuild(String buildFile, String target, int timeout)
@@ -26,6 +27,10 @@ class ContinuousBuild
 		{
 		m_defines = defines;
 		}
+	public void setPropertiesFile(String propertiesFile)
+		{
+		m_propertiesFile = propertiesFile;
+		}
 		
 	//---------------------------------------------------------------------------
 	public void rebuild()
@@ -35,6 +40,7 @@ class ContinuousBuild
 		
 		try
 			{
+			make.loadPropertiesFile(m_propertiesFile);
 			make.init();
 			Tablesaw.addDefines(make, m_defines);
 			make.setCaptureSource(true);
