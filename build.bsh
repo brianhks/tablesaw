@@ -26,7 +26,7 @@ tempdir = "temp";
 jardir = blddir+"/jar";
 buildVersion = "1.2.4";
 versionSrcFile = "tablesaw/Version.java";
-javaDocDir = "../tablesaw.javadoc";
+javaDocDir = "docs";
 
 /*
 tstClassFiles = saw.substitute("(.*)\\.java", classdir+"/$1.class", tstSourceFiles);

@@ -141,24 +141,7 @@ public class Tablesaw
 	 */
 	public static final String PROP_BUILD_DIRECTORY = "tablesaw.build_directory";
 	
-	/**
-	Use with createFileList.  Recurse into sub directories when creating file
-	list.
-	@deprecated  Use FileListObject class instead
-	*/
-	//public static final int RECURSE = 		0x00000001;
-	/**
-	Use with createFileList.  Includes the full path when listing files.
-	@deprecated  Use FileListObject class instead
-	*/
-	//public static final int INCLUDE_PATH = 	0x00000002;
-	/**
-	Use with createFileList and in conjunction with INCLUDE_PATH.  This makes the 
-	path relative to the first parameter of createFileList
-	@deprecated  Use FileListObject class instead
-	*/
-	//public static final int RELATIVE_PATH = 0x00000004;
-	
+
 	private ArrayList                 m_rules;
 	private MakeEngine                m_engine;
 	private BuildFileManager          m_fileManager;
@@ -283,6 +266,27 @@ public class Tablesaw
 			}
 		}
 
+	private static File findBuildFile(String directory)
+		{
+		File f = new File(directory, "build.bsh");
+		if (!f.exists())
+			f = new File(directory, "build.py");
+
+		if (!f.exists())
+			f = new File(directory, "build.gvy");
+
+		if (!f.exists())
+			f = new File(directory, "build.groovy");
+
+		if (!f.exists())
+			f = new File(directory, "build.js");
+
+		if (!f.exists())
+			f = new File(directory, "build.rb");
+
+		return (f);
+		}
+
 	//---------------------------------------------------------------------------
 	/**
 		Returns the current instance of <code>Tablesaw</code> from off of the thread
@@ -370,29 +374,18 @@ public class Tablesaw
 			{			
 			if (cl.buildFile == null)
 				{
-				File f = new File("build.bsh");
-				if (!f.exists())
-					f = new File("build.py");
-					
-				if (!f.exists())
-					f = new File("build.gvy");
-					
-				if (!f.exists())
-					f = new File("build.groovy");
+				File f = findBuildFile(null);
 
 				if (!f.exists())
-					f = new File("build.js");
+					f = findBuildFile(getTablesawPath());
 
-				if (!f.exists())
-					f = new File("build.rb");
-				
 				if (!f.exists())
 					{
 					printErr("No build file specified");
-					System.exit(-1);
+					System.exit(1);
 					}
 				else
-					cl.buildFile = f.getName();
+					cl.buildFile = f.getPath();
 				}
 				
 			if (cl.debug)
@@ -429,6 +422,7 @@ public class Tablesaw
 						{
 						String target = (String)it.next();
 						make = new Tablesaw();
+						make.getTablesawPath();
 						addDefines(make, cl.defines);
 						make.init();
 						if (cl.threadCount != 1)
@@ -880,13 +874,14 @@ public class Tablesaw
 	/**
 		Returns the location of the Tablesaw jar file
 	*/
-	private String getTablesawPath()
+	public static String getTablesawPath()
 		{
 		String ret = null;
 		
 		try
 			{
-			ClassLoader cl = this.getClass().getClassLoader();
+			//ClassLoader cl = this.getClass().getClassLoader();
+			ClassLoader cl = ClassLoader.getSystemClassLoader();
 			String tablesawPath = cl.getResource("tablesaw/Tablesaw.class").getPath();
 
 			int bangIndex = tablesawPath.indexOf('!');
@@ -1071,6 +1066,10 @@ public class Tablesaw
 			throws TablesawException
 		{
 		Debug.print("Build file = %s", buildFile);
+
+		if (buildFile == null)
+			throw new TablesawException("No build file specified");
+
 		m_buildFile = buildFile;
 		
 		if (m_buildFile.endsWith(".bsh"))

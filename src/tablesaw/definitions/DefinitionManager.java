@@ -67,10 +67,13 @@ public class DefinitionManager
 		InputStream is = cl.getResourceAsStream(file);
 		if (is == null)
 			{
+			File defFile = new File(Tablesaw.getCurrentTablesaw().getWorkingDirectory(), file);
+			if (!defFile.exists())
+				defFile = new File(Tablesaw.getTablesawPath(), file);
+
 			try
 				{
-				is = new FileInputStream(new File(
-					Tablesaw.getCurrentTablesaw().getWorkingDirectory(), file));
+				is = new FileInputStream(defFile);
 				}
 			catch (FileNotFoundException fnfe)
 				{
