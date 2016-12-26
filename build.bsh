@@ -14,6 +14,7 @@ print("========================================================");
 saw.setProperty("tablesaw.multiThreadOutput", "true");
  
 blddir = "build";
+docsDir = "docs";
 classdir = blddir+"/classes";
 //testclassdir = blddir+"/test/classes";
 gensrcdir = blddir +"/gensrc";
@@ -160,6 +161,30 @@ void doJavadoc(Rule rule)
 	
 	saw.exec(cmd);
 	}
+
+//------------------------------------------------------------------------------
+//Build Docs
+new SimpleRule("docs").setDescription("Build Sphinx Documentation")
+		.setMakeAction("doDocs")
+		.addSources(new RegExFileSet("src/docs", ".*").recurse().getFullFilePaths())
+		.setProperty("all", false);
+
+new SimpleRule("docs-rebuild").setDescription("Rebuild Sphinx Documentation. All docs are built even if not changed.")
+		.setMakeAction("doDocs")
+		.addSources(new RegExFileSet("src/docs", ".*").recurse().getFullFilePaths())
+		.setProperty("all", true);
+
+void doDocs(Rule rule)
+{
+    command = "sphinx-build";
+    if (rule.getProperty("all"))
+        command += " -a";
+    sudo = saw.createAsyncProcess(".", command+" -b html src/docs "+docsDir);
+    sudo.run();
+    sudo.waitForProcess();
+    if (sudo.getExitCode() != 0)
+        throw new TablesawException("Unable to run sphinx-build");
+}
 	
 //------------------------------------------------------------------------------
 //==-- BUILD SLICK XML PARSER --==
