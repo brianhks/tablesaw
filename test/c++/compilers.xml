@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <definitions xmlns="http://www.cpmake.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://www.cpmake.org ../schema/definitions.xsd">
+             xsi:schemaLocation="https://raw.githubusercontent.com/brianhks/tablesaw/master/schema/definitions.xsd">
 	<definition name="vc7_compiler" command="cl.exe">
 		
 		<mode>debug</mode>
