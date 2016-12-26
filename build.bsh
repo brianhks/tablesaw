@@ -18,7 +18,7 @@ docsDir = "docs";
 classdir = blddir+"/classes";
 //testclassdir = blddir+"/test/classes";
 gensrcdir = blddir +"/gensrc";
-srcdir = "src";
+srcdir = "src/main/java";
 tstsrc = "test/src";
 extdir = "lib";
 etcdir = "etc";
@@ -119,8 +119,8 @@ jp.getJarRule().setManifest("manifest.txt")
 		.addFile("license.txt")
 		.addFiles(srcdir, templateFiles)
 		.addFiles(etcFiles)
-		.addFile("src", "tablesaw/addons/ivy/pom.xsl")
-		.addFile("src", "tablesaw/tablesaw.properties");
+		.addFile(srcdir, "tablesaw/addons/ivy/pom.xsl")
+		.addFile(srcdir, "tablesaw/tablesaw.properties");
 		
 saw.setDefaultTarget("jar");
 
