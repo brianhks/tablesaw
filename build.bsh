@@ -111,7 +111,7 @@ jc = jp.getCompileRule();
 jc.addClasspath(classpath);
 jc.addSource(versionSrcFile);
 jc.addDepend(versionRule);
-jc.getDefinition().set("target", "1.5");
+jc.getDefinition().set("target", "1.8");
 
 jp.getTestCompileRule().addClasspath(classpath);
 

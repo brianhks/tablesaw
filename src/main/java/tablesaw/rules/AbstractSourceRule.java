@@ -78,7 +78,7 @@ public abstract class AbstractSourceRule<T extends AbstractSourceRule> extends A
 		if ((sources.length == 1) && (sources[0] instanceof Iterable))
 			return (addSources((Iterable<Object>)sources[0]));
 		else if ((sources.length == 1) && (sources[0] instanceof AbstractFileSet))
-			return (addSources(((AbstractFileSet)sources[0]).getFullFilePaths()));
+			return (T) addSources(((AbstractFileSet)sources[0]).getFullFilePaths());
 		else
 			return (addSources(Arrays.asList(sources)));
 		}

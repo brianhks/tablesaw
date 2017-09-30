@@ -15,12 +15,12 @@
 
 		<dependency org="org.hectorclient" name="hector-core" rev="1.1-4">
 			<artifact name="hector-core" type="bundle" ext="jar"/>
-			<exclude org="javax.servlet" module="servlet-api"/>
+			<exclude org="javax.servlet" name="servlet-api"/>
 		</dependency>
 
 		<dependency org="org.hectorclient" name="hector-object-mapper" rev="3.1-09">
-			<exclude module="cassandra-all"/>
-			<exclude org="joda-time" module="joda-time"/>
+			<exclude name="cassandra-all"/>
+			<exclude org="joda-time" name="joda-time-api"/>
 		</dependency>
 
 	</dependencies>

@@ -1,17 +1,17 @@
 package tablesaw.addons.ivy;
 
-import org.apache.ivy.core.module.descriptor.DependencyDescriptor;
-import org.apache.ivy.core.module.descriptor.ExcludeRule;
-import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
 import org.apache.ivy.core.module.id.ModuleId;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.apache.ivy.core.report.ArtifactDownloadReport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import tablesaw.*;
+import tablesaw.BuildCallback;
+import tablesaw.MakeAction;
+import tablesaw.ScriptCallback;
+import tablesaw.Tablesaw;
+import tablesaw.TablesawException;
 import tablesaw.addons.java.JavaProgram;
 import tablesaw.rules.AbstractRule;
 import tablesaw.rules.Rule;
@@ -28,8 +28,19 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  Created with IntelliJ IDEA.
@@ -44,7 +55,7 @@ public class PomRule extends AbstractRule<PomRule>
 	public static final String ARTIFACT_ID_PROPERTY = JavaProgram.PROGRAM_NAME_PROPERTY;
 
 	public static final String GROUP_ID_PROPERTY = "tablesaw.java.ivy.group_id";
-	
+
 	public static final String VERSION_PROPERTY = JavaProgram.PROGRAM_VERSION_PROPERTY;
 	
 	public static final String PACKAGING_PROPERTY = "tablesaw.java.ivy.packaging";
@@ -94,6 +105,18 @@ public class PomRule extends AbstractRule<PomRule>
 
 		s_indentMap.put("<exclusion", 1);
 		s_indentMap.put("</exclusion", -1);
+
+		s_indentMap.put("<build", 1);
+		s_indentMap.put( "</build", -1);
+
+		s_indentMap.put("<plugins", 1);
+		s_indentMap.put("</plugins", -1);
+
+		s_indentMap.put("<plugin", 1);
+		s_indentMap.put("</plugin", -1);
+
+		s_indentMap.put("<configuration", 1);
+		s_indentMap.put("</configuration", -1);
 		}
 
 
@@ -113,6 +136,7 @@ public class PomRule extends AbstractRule<PomRule>
 	private String m_url;
 	private String m_scmUrl;
 	private String m_scmConnection;
+	private String m_javaVersion;
 
 
 	private List<Triple<String, String, String>> m_licenses;
@@ -232,7 +256,39 @@ public class PomRule extends AbstractRule<PomRule>
 			}
 		}
 
-	private void setTransParam(Transformer transformer, String property, String value)
+	private void setJavaVersion(Document document)
+		{
+		if (m_javaVersion != null && m_javaVersion.length() > 0)
+			{
+			Element rootNode = document.getDocumentElement();
+			Element build = document.createElementNS(MAVEN_NS, "build");
+			rootNode.appendChild(build);
+
+			Element plugins = document.createElementNS(MAVEN_NS, "plugins");
+			build.appendChild(plugins);
+
+			Element plugin = document.createElementNS(MAVEN_NS, "plugin");
+			plugins.appendChild(plugin);
+
+			Element groupId = document.createElementNS(MAVEN_NS, "groupId");
+			groupId.setTextContent("org.apache.maven.plugins");
+			Element artifactId = document.createElementNS(MAVEN_NS, "artifactId");
+			artifactId.setTextContent("maven-compiler-plugin");
+			Element configuration = document.createElementNS(MAVEN_NS, "configuration");
+			plugin.appendChild(groupId);
+			plugin.appendChild(artifactId);
+			plugin.appendChild(configuration);
+
+			Element source = document.createElementNS(MAVEN_NS, "source");
+			source.setTextContent(m_javaVersion);
+			Element target = document.createElementNS(MAVEN_NS, "target");
+			target.setTextContent(m_javaVersion);
+			configuration.appendChild(source);
+			configuration.appendChild(target);
+			}
+		}
+
+		private void setTransParam(Transformer transformer, String property, String value)
 		{
 		if ((value == null) || (value.equals("")))
 			return;
@@ -312,6 +368,7 @@ public class PomRule extends AbstractRule<PomRule>
 
 			setLicenses(doc);
 			setDevelopers(doc);
+			setJavaVersion(doc);
 
 			if (m_domCallback != null)
 				m_domCallback.doCallback(doc);
@@ -449,6 +506,12 @@ public class PomRule extends AbstractRule<PomRule>
 	public PomRule setPomScmConnection(String scmConnection)
 		{
 		m_scmConnection = scmConnection;
+		return this;
+		}
+
+	public PomRule setJavaVersion(String javaVersion)
+		{
+		m_javaVersion = javaVersion;
 		return this;
 		}
 	}
