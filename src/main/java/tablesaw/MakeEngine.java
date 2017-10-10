@@ -769,14 +769,12 @@ public class MakeEngine
 				//System.out.println("Adding consumes "+m.getName());
 				da.addConsumesMethod(consumes.value(), m);
 				}
-			else
+
+			Provides provides = m.getAnnotation(Provides.class);
+			if (provides != null)
 				{
-				Provides provides = m.getAnnotation(Provides.class);
-				if (provides != null)
-					{
-					//System.out.println("Adding provides "+m.getName());
-					da.addProvidesMethod(provides.value(), m);
-					}
+				//System.out.println("Adding provides "+m.getName());
+				da.addProvidesMethod(provides.value(), m);
 				}
 			}
 

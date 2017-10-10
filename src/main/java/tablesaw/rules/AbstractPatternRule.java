@@ -120,6 +120,16 @@ public class AbstractPatternRule<T extends AbstractPatternRule> extends Abstract
 		}
 		
 	//---------------------------------------------------------------------------
+	/**
+	 Called to force this Rule to always run regardless of dependencies
+	 */
+	public T alwaysRun()
+		{
+		m_needToRun = true;
+		return ((T)this);
+		}
+
+	//---------------------------------------------------------------------------
 	public T dontDeleteTargets()
 		{
 		m_deleteTargets = false;
@@ -209,8 +219,6 @@ public class AbstractPatternRule<T extends AbstractPatternRule> extends Abstract
 					}
 				}
 			}
-		else
-			m_needToRun = false;
 		}
 		
 	//---------------------------------------------------------------------------
