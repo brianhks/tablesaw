@@ -302,7 +302,7 @@ public class PomRule extends AbstractRule<PomRule>
 		try
 			{
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			InputStream xslStream = ClassLoader.getSystemClassLoader().getResourceAsStream("tablesaw/addons/ivy/pom.xsl");
+			InputStream xslStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("tablesaw/addons/ivy/pom.xsl");
 			Transformer transformer = transformerFactory.newTransformer(new StreamSource(xslStream));
 
 			setTransParam(transformer, "artifactId", getProperty(m_artifactId, ARTIFACT_ID_PROPERTY));

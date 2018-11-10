@@ -32,7 +32,7 @@ public class RubyInterpreter implements ScriptInterpreter
 		/*m_runtime = JavaEmbedUtils.initialize(new ArrayList());
 		m_runtimeAdapter = JavaEmbedUtils.newRuntimeAdapter();*/
 		m_scriptingContainer = new ScriptingContainer(LocalContextScope.SINGLETON);
-		URLClassLoader cl = (URLClassLoader)ClassLoader.getSystemClassLoader();
+		URLClassLoader cl = (URLClassLoader)Thread.currentThread().getContextClassLoader();
 
 		List<String> paths = new ArrayList<String>();
 		URL[] urls = cl.getURLs();

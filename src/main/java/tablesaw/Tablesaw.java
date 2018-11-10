@@ -35,6 +35,7 @@ import tablesaw.rules.DefinitionsRule;
 import tablesaw.rules.HelpRule;
 import tablesaw.rules.AntBuildRule;
 import tablesaw.addons.java.Classpath;
+import tablesaw.util.TablesawClassLoader;
 
 
 /**
@@ -902,8 +903,8 @@ public class Tablesaw
 		
 		try
 			{
-			//ClassLoader cl = this.getClass().getClassLoader();
-			ClassLoader cl = ClassLoader.getSystemClassLoader();
+			ClassLoader cl = Thread.currentThread().getContextClassLoader();
+			//ClassLoader cl = ClassLoader.getSystemClassLoader();
 			String tablesawPath = cl.getResource("tablesaw/Tablesaw.class").getPath();
 
 			int bangIndex = tablesawPath.indexOf('!');
@@ -2812,10 +2813,19 @@ public class Tablesaw
 	public void addClasspath(String path)
 			throws TablesawException
 		{
-		URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-		Class sysclass = URLClassLoader.class;
-		
-		try 
+		TablesawClassLoader loader = (TablesawClassLoader)Thread.currentThread().getContextClassLoader();
+
+		try
+			{
+			loader.addURL(new File(path).toURL());
+			}
+		catch (MalformedURLException e)
+			{
+			Debug.print(e);
+			throw new TablesawException("Error, could not add URL to system classloader", -1);
+			}
+
+		/*try
 			{
 			Method method = sysclass.getDeclaredMethod("addURL",parameters);
 			method.setAccessible(true);
@@ -2825,7 +2835,7 @@ public class Tablesaw
 			{
 			Debug.print(t);
 			throw new TablesawException("Error, could not add URL to system classloader", -1);
-			}
+			}*/
 		}
 		
 //-------------------------------------------------------------------

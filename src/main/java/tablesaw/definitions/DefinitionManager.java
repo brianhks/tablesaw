@@ -63,7 +63,7 @@ public class DefinitionManager
 	public void includeDefinitionFile(String file)
 			throws TablesawException
 		{
-		ClassLoader cl = ClassLoader.getSystemClassLoader();
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		InputStream is = cl.getResourceAsStream(file);
 		if (is == null)
 			{
