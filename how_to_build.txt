@@ -1,0 +1,10 @@
+Building works best with JDK 1.6
+
+To build set your classpath to the tablesaw jar file like so:
+>export CLASSPATH=tools/tablesaw-1.2.1.jar
+
+Then to build type
+>java make
+
+You can also get help on what targets are available by typing
+>java make help
