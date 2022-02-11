@@ -1,0 +1,10 @@
+<ivysettings>
+	<settings defaultResolver="default"/>
+	<resolvers>
+		<ibiblio name="central" m2compatible="true" root="https://repo1.maven.org/maven2/" />
+
+		<chain name="default">
+			<resolver ref="central"/>
+		</chain>
+	</resolvers>
+</ivysettings>

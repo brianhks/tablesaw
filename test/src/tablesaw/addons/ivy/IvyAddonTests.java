@@ -1,9 +1,6 @@
 package tablesaw.addons.ivy;
 
 
-import tablesaw.Debug;
-import tablesaw.addons.ivy.IvyAddon;
-import tablesaw.addons.ivy.ResolveRule;
 import org.apache.ivy.core.report.ResolveReport;
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +42,7 @@ public class IvyAddonTests
 	public void testGetResolveRule()
 			throws TablesawException
 		{
-		IvyAddon ia = new IvyAddon().setup();
+		IvyAddon ia = new IvyAddon().addSettingsFile("test/ivy/ivysettings.xml").setup();
 		
 		ResolveRule rr1 = ia.getResolveRule("*");
 		ResolveRule rr2 = ia.getResolveRule(Collections.singleton("*"));
@@ -58,7 +55,7 @@ public class IvyAddonTests
 	public void testResolve()
 			throws TablesawException
 		{
-		IvyAddon ia = new IvyAddon().setup();
+		IvyAddon ia = new IvyAddon().addSettingsFile("test/ivy/ivysettings.xml").setup();
 		
 		m_make.buildTarget("ivy-resolve");
 
@@ -85,7 +82,7 @@ public class IvyAddonTests
 	public void testRetrieve()
 			throws TablesawException
 		{
-		IvyAddon ia = new IvyAddon().setup();
+		IvyAddon ia = new IvyAddon().addSettingsFile("test/ivy/ivysettings.xml").setup();
 
 		ia.getRetrieveRule("*").setUseWorkingDirectory(true);
 

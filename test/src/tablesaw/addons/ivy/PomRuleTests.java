@@ -9,6 +9,7 @@ import tablesaw.TablesawException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,12 +39,12 @@ public class PomRuleTests
 	@Test
 	public void testIvyParser() throws IOException, TablesawException
 		{
-		IvyAddon ia = new IvyAddon().setup();
+		IvyAddon ia = new IvyAddon().addSettingsFile("test/ivy/ivysettings.xml").setup();
 		ia.setIvyFile("test/resources/ivy.xml");
 		ResolveRule resolveRule = ia.getResolveRule("default");
 		resolveRule.doMakeAction(resolveRule);
 		File pomFile = File.createTempFile("pom", ".xml");
-		PomRule pr = new PomRule(new File("test/resources/ivy.xml"), pomFile, resolveRule, null);
+		PomRule pr = new PomRule(new File("test/resources/ivy.xml"), Collections.<File>emptyList(), pomFile, resolveRule, null);
 		pr.setPomName("parser_test");
 		pr.setPomArtifactId("parser_test");
 
@@ -59,14 +60,14 @@ public class PomRuleTests
 	@Test
 	public void testIvyParser_withTests() throws IOException, TablesawException
 		{
-		IvyAddon ia = new IvyAddon().setup();
+		IvyAddon ia = new IvyAddon().addSettingsFile("test/ivy/ivysettings.xml").setup();
 		ia.setIvyFile("test/resources/ivy.xml");
 		ResolveRule resolveRule = ia.getResolveRule("default");
 		ResolveRule testResolveRule = ia.getResolveRule("test");
 		resolveRule.doMakeAction(resolveRule);
 		testResolveRule.doMakeAction(testResolveRule);
 		File pomFile = File.createTempFile("pom", ".xml");
-		PomRule pr = new PomRule(new File("test/resources/ivy.xml"), pomFile, resolveRule, testResolveRule);
+		PomRule pr = new PomRule(new File("test/resources/ivy.xml"), Collections.<File>emptyList(), pomFile, resolveRule, testResolveRule);
 		pr.setPomName("parser_test");
 		pr.setPomArtifactId("parser_test");
 

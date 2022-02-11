@@ -117,12 +117,16 @@ public class PomRule extends AbstractRule<PomRule>
 
 		s_indentMap.put("<configuration", 1);
 		s_indentMap.put("</configuration", -1);
+
+		s_indentMap.put("<properties", 1);
+		s_indentMap.put("</properties", -1);
 		}
 
 
 	BuildCallback m_domCallback;
 	private final File m_ivyFile;
 	private final File m_pomFile;
+	private final List<File> m_settingsFiles;
 	private final Tablesaw m_tablesaw;
 	private final ResolveRule m_resolveRule;
 	private final ResolveRule m_testResolveRule;
@@ -137,6 +141,7 @@ public class PomRule extends AbstractRule<PomRule>
 	private String m_scmUrl;
 	private String m_scmConnection;
 	private String m_javaVersion;
+	private Map<String, String> m_properties = new HashMap<String, String>();
 
 
 	private List<Triple<String, String, String>> m_licenses;
@@ -145,18 +150,20 @@ public class PomRule extends AbstractRule<PomRule>
 
 	/**
 	 Normally PomRule objects are not created directly but, through calling
-	 {@link tablesaw.addons.ivy.IvyAddon#createPomRule(String, ResolveRule)}
-	 @param ivyFile Ivy file to read from
+	 {@link tablesaw.addons.ivy.IvyAddon#createPomRule(String, ResolveRule)}@param ivyFile Ivy file to read from
+	 @param settingsFiles
 	 @param pomFile Target pom file to create
 	 @param resolveRule Resolve rule to use
 	 @param testResolveRule Test resolve rule to use
+
 	 */
-	public PomRule(File ivyFile, File pomFile, ResolveRule resolveRule, ResolveRule testResolveRule)
+	public PomRule(File ivyFile, List<File> settingsFiles, File pomFile, ResolveRule resolveRule, ResolveRule testResolveRule)
 		{
 		super();
 		this.setName("ivy-pom");
 
 		m_ivyFile = ivyFile;
+		m_settingsFiles = settingsFiles;
 		m_pomFile = pomFile;
 		m_resolveRule = resolveRule;
 		m_testResolveRule = testResolveRule;
@@ -224,6 +231,23 @@ public class PomRule extends AbstractRule<PomRule>
 				Element distribution = document.createElementNS(MAVEN_NS, "distribution");
 				distribution.setTextContent(license.getThird());
 				licenseElement.appendChild(distribution);
+				}
+			}
+		}
+
+	private void setProperties(Document document)
+		{
+		if (m_properties.size() != 0)
+			{
+			Element rootNode = document.getDocumentElement();
+			Element properties = document.createElementNS(MAVEN_NS, "properties");
+			rootNode.appendChild(properties);
+
+			for (Map.Entry<String, String> propEntry : m_properties.entrySet())
+				{
+				Element propElem = document.createElementNS(MAVEN_NS, propEntry.getKey());
+				propElem.setTextContent(propEntry.getValue());
+				properties.appendChild(propElem);
 				}
 			}
 		}
@@ -335,9 +359,25 @@ public class PomRule extends AbstractRule<PomRule>
 					}
 				}
 
-			//Read in the ivy.xml file
+			//Read properties from ivysettings files
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+			for (File settingsFile : m_settingsFiles)
+				{
+				Document settingsDoc = dBuilder.parse(settingsFile);
+
+				NodeList properties = settingsDoc.getElementsByTagName("property");
+
+				for (int I = 0; I < properties.getLength(); I++)
+					{
+					Element prop = (Element)properties.item(I);
+
+					m_properties.put(prop.getAttribute("name"), prop.getAttribute("value"));
+					}
+				}
+
+			//Read in the ivy.xml file
 			Document ivyDoc = dBuilder.parse(m_ivyFile);
 
 			NodeList dependencyNodes = ivyDoc.getElementsByTagName("dependency");
@@ -361,11 +401,13 @@ public class PomRule extends AbstractRule<PomRule>
 					}
 				}
 
+			//Transform ivy into pom
 			DOMResult domResult = new DOMResult();
 			transformer.transform(new DOMSource(ivyDoc), domResult);
 
 			Document doc = (Document)domResult.getNode();
 
+			setProperties(doc);
 			setLicenses(doc);
 			setDevelopers(doc);
 			setJavaVersion(doc);

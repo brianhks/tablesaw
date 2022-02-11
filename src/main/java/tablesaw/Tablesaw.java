@@ -410,6 +410,9 @@ public class Tablesaw
 				ContinuousBuild cb = new ContinuousBuild(cl.buildFile, 
 						(String)(cl.targets.size() == 1 ? cl.targets.get(0) : null), 
 						(int)(cl.continuous.floatValue() * 1000.0));
+				if (cl.properties != null)
+					cb.setPropertiesFile(cl.properties);
+
 				cb.setDefines(cl.defines);
 				cb.rebuild();
 				

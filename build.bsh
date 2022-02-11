@@ -25,7 +25,7 @@ etcdir = "etc";
 intdir = extdir+"/interpreters";
 tempdir = "temp";
 jardir = blddir+"/jar";
-buildVersion = "1.2.7";
+buildVersion = "1.2.8";
 versionSrcFile = "tablesaw/Version.java";
 javaDocDir = "docs";
 
@@ -111,8 +111,8 @@ jc = jp.getCompileRule();
 jc.addClasspath(classpath);
 jc.addSource(versionSrcFile);
 jc.addDepend(versionRule);
-jc.getDefinition().set("source", "1.5");
-jc.getDefinition().set("target", "1.5");
+jc.getDefinition().set("source", "1.6");
+jc.getDefinition().set("target", "1.6");
 
 jp.getTestCompileRule().addClasspath(classpath);
 

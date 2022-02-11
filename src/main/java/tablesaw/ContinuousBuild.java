@@ -40,7 +40,9 @@ class ContinuousBuild
 		
 		try
 			{
-			make.loadPropertiesFile(m_propertiesFile);
+			if (m_propertiesFile != null)
+				make.loadPropertiesFile(m_propertiesFile);
+
 			make.init();
 			Tablesaw.addDefines(make, m_defines);
 			make.setCaptureSource(true);
@@ -57,6 +59,8 @@ class ContinuousBuild
 			}
 			
 		m_fileList.clear();
+
+
 		//Reset source files
 		Iterator<File> it = make.getSourceFiles().iterator();
 		while (it.hasNext())
