@@ -40,8 +40,10 @@ public class RhinoInterpreter
 	public RhinoInterpreter()
 			throws TablesawException
 		{
+
 		m_context = Context.enter();
-		m_scope = m_context.initStandardObjects();
+		ScriptableObject scope = new ImporterTopLevel(m_context);
+		m_scope = m_context.initStandardObjects(scope);
 		String script = "function print(a) { java.lang.System.out.println(a); }";
 		try
 			{

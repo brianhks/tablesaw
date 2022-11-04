@@ -1,6 +1,9 @@
 package tablesaw.addons.java;
 
 import tablesaw.*;
+import tablesaw.annotation.Consumes;
+
+import java.io.File;
 
 /**
  Extension to the JarRule that allows you to build a war file.
@@ -8,6 +11,8 @@ import tablesaw.*;
 public class WarRule extends JarRule
 		implements MakeAction
 	{
+	public static final String LIB_FOLDER = "WEB-INF/lib";
+
 	/**
 	 Create a WarRule specifying the target war file to create.
 	 @param targetWarFile
@@ -62,5 +67,39 @@ public class WarRule extends JarRule
 		
 		return (this);
 		}
-		
+
+	public WarRule addWebAppDirectory(String webAppFolder)
+	{
+		RegExFileSet fileSet = new RegExFileSet(webAppFolder, ".*").recurse();
+
+		addFileSet(fileSet);
+
+		return (this);
+	}
+
+	public WarRule addJavaProgram(JavaProgram jp)
+	{
+		JarRule jarRule = jp.getJarRule();
+		addDepend(jarRule);
+		File targetFile = new File(jarRule.getTarget());
+		addFileTo(LIB_FOLDER, targetFile.getParent(), targetFile.getName());
+
+		return this;
+	}
+	
+
+	@Consumes("java.classpath")
+	public WarRule addClasspath(Classpath classpath)
+		{
+		for (String path : classpath.getPaths())
+		{
+			if (path.endsWith(".jar"))
+			{
+				File pathFile = new File(path);
+				this.addFileTo(LIB_FOLDER, pathFile.getParent(), pathFile.getName());
+			}
+		}
+
+		return (this);
+		}
 	}

@@ -5,3 +5,4 @@ out
 *.cpmakecache
 *.tablesawcache
 cachedir
+docs
