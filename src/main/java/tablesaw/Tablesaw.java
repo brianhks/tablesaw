@@ -23,7 +23,7 @@ import java.util.regex.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
-import java.lang.reflect.*;
+
 import org.my_jargp.*;
 
 import java.awt.Toolkit;
@@ -197,8 +197,8 @@ public class Tablesaw
 		public boolean debug;
 		public String buildFile;
 		public int threadCount;
-		public List defines;
-		public List targets;
+		public List<String> defines;
+		public List<String> targets;
 		public Float continuous;
 		public String banner;
 		public String properties;
@@ -212,8 +212,8 @@ public class Tablesaw
 			debug = false;
 			buildFile = null;
 			threadCount = 1;
-			defines = new ArrayList();
-			targets = new ArrayList();
+			defines = new ArrayList<String>();
+			targets = new ArrayList<String>();
 			continuous = null;
 			banner = null;
 			properties = null;
@@ -244,7 +244,7 @@ public class Tablesaw
 	/**
 		The thread local data is designed like a stack
 	*/
-	private static MyThreadLocal s_tlMakeList = new MyThreadLocal();
+	private static final MyThreadLocal s_tlMakeList = new MyThreadLocal();
 			
 	private static class MyThreadLocal extends ThreadLocal<LinkedList<Tablesaw>>
 		{
@@ -424,7 +424,7 @@ public class Tablesaw
 				//targets = cl.getNonOptions();
 				if (cl.targets.size() > 0)
 					{
-					Iterator it = cl.targets.iterator();
+					Iterator<String> it = cl.targets.iterator();
 					while (it.hasNext())
 						{
 						String target = (String)it.next();
@@ -3007,6 +3007,11 @@ public class Tablesaw
 			throw new TablesawException("Unable to find definition for "+name, -1);
 			
 		return (def);
+		}
+
+	public PomFile parsePomFile(String pomFilePath) throws TablesawException
+		{
+		return new PomFile(file(pomFilePath));
 		}
 		
 		

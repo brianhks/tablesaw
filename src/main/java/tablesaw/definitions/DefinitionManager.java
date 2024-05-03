@@ -21,7 +21,7 @@ public class DefinitionManager
 	private Map<String, Definition> m_definitions;
 	
 	
-	private static String getValue(Element n)
+	public static String getValue(Element n)
 		{
 		CharacterData cd = (CharacterData)n.getFirstChild();
 		if (cd == null)
